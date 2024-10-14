@@ -38,12 +38,7 @@ const PromoModel = sequelize.define(
       type: DataTypes.BOOLEAN,
     },
     discount: {
-      type: DataTypes.DECIMAL(10, 2),
-      get() {
-        const rawValue = this.getDataValue("discount");
-        // Пример кастинга в другой тип
-        return Number(rawValue);
-      },
+      type: DataTypes.INTEGER,
     },
   },
   {

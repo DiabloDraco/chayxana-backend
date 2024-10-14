@@ -11,6 +11,7 @@ import GalleryRouter from "./gallery.routes.js";
 import WorkerRouter from "./workers.routes.js";
 import FeedbackRouter from "./feedback.routes.js";
 import PromoRouter from "./promo.routes.js";
+import TablesRouter from "./tables.routes.js";
 
 const routes = Router();
 
@@ -35,5 +36,6 @@ routes.use(GalleryRouter);
 routes.use(WorkerRouter);
 routes.use(FeedbackRouter);
 routes.use(PromoRouter);
+routes.use(TablesRouter);
 
 export default routes;

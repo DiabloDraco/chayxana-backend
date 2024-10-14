@@ -3,6 +3,8 @@ import OrderModel from "../models/order.model.js";
 import ProductModel from "../models/product.model.js";
 import { DECIMAL, Op } from "sequelize";
 import DiscountModel from "../models/discount.model.js";
+import PromoModel from "../models/promo.model.js";
+import UserModel from "../models/user.model.js";
 
 const applyDiscount = async (totalAmount) => {
   try {
@@ -42,9 +44,41 @@ const createRequest = async (
   name,
   delivery_id,
   target,
-  user
+  user,
+  delivery_range,
+  promo,
+  payment_type
 ) => {
   try {
+    const findedPromo = await PromoModel.findOne({
+      where: {
+        promo_code: promo,
+        [Op.or]: [
+          {
+            count: {
+              [Op.gt]: 0,
+            },
+          },
+          {
+            is_infinite: {
+              [Op.eq]: true,
+            },
+          },
+        ],
+        expired_at: {
+          [Op.gte]: new Date(),
+        },
+      },
+    });
+
+    const delivery_price =
+      delivery_range == 1
+        ? 350
+        : delivery_range == 2
+        ? 450
+        : delivery_range == 3
+        ? 550
+        : 0;
     const getProductPrice = async (productId, quantity) => {
       const product = await ProductModel.findOne({
         attributes: ["price"],
@@ -80,11 +114,13 @@ const createRequest = async (
 
     const discountAmount = await applyDiscount(full_price);
 
-    const finalPrice = full_price - discountAmount.discounted;
+    const finalPrice = findedPromo
+      ? (full_price - discountAmount.discounted) / findedPromo.discount
+      : full_price - discountAmount.discounted;
 
     const request = await RequestModel.create(
       {
-        full_price: delivery_id == 1 ? finalPrice + 350 : finalPrice,
+        full_price: delivery_id == 1 ? finalPrice + delivery_price : finalPrice,
         phone,
         address,
         delivery_id,
@@ -98,6 +134,19 @@ const createRequest = async (
       { returning: true }
     );
 
+    if (!findedPromo && !finded) {
+      const findedUser = await UserModel.findOne({
+        where: {
+          id: user,
+        },
+      });
+
+      findedUser.cashback += finalPrice;
+      await findedUser.save();
+    } else if (findedPromo) {
+      findedPromo.count -= 1;
+      await findedPromo.save();
+    }
     if (!request) {
       throw new Error("Failed to create request");
     }

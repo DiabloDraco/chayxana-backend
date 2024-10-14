@@ -71,6 +71,12 @@ const RequestModel = sequelize.define(
         key: "id",
       },
     },
+    delivery_date: {
+      type: DataTypes.DATE,
+    },
+    delivery_time: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: true,
