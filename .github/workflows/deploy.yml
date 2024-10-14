@@ -1,0 +1,29 @@
+name: Deploy backend things to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+
+      - name: Deploy
+        run: |
+          npm install
+          npm i -g pm2
+          pm2 stop 0
+          pm2 start 0
+          pm2 save
+          sudo service nginx restart
