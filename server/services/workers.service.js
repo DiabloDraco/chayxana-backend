@@ -28,12 +28,12 @@ const deleteItem = async ({ id }) => {
   }
 };
 
-const updateItem = async ({ name, description, photo, id }) => {
+const updateItem = async ({ name, position, photo, id }) => {
   try {
     const item = await WorkersModel.findOne({ where: { id } });
     if (!item) return new Error("Item not found");
     item.name = name || item.name;
-    item.description = description || item.description;
+    item.position = position || item.position;
     item.photo = photo || item.photo;
     const saved = await item.save();
     return saved;
@@ -42,11 +42,11 @@ const updateItem = async ({ name, description, photo, id }) => {
   }
 };
 
-const createItem = async ({ name, description, photo }) => {
+const createItem = async ({ name, position, photo }) => {
   try {
     const item = await WorkersModel.create({
       name,
-      position: description,
+      position,
       photo,
     });
     return item;

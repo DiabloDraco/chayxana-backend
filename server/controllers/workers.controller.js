@@ -29,14 +29,14 @@ const GETID = async (req, res) => {
 
 const POST = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, position } = req.body;
     const filename = req.file.filename;
 
-    if (!name || !description) {
+    if (!name || !position) {
       throw new Error("All datas is required");
     }
 
-    const item = await createItem({ name, description, photo: filename });
+    const item = await createItem({ name, position, photo: filename });
     res.status(200).send(item);
   } catch (error) {
     res.status(400).send(error);
@@ -45,20 +45,20 @@ const POST = async (req, res) => {
 
 const PUT = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, position } = req.body;
     const { id } = req.params;
     const oldItem = await findOne(id);
 
     if (req.file) {
       const filename = req.file.filename;
 
-      const item = await updateItem({ name, description, photo: filename, id });
+      const item = await updateItem({ name, position, photo: filename, id });
 
       await deletePhoto(oldItem.photo);
 
       res.status(200).send(item);
     } else {
-      const item = await updateItem({ name, description, id });
+      const item = await updateItem({ name, position, id });
 
       res.status(200).send(item);
     }
