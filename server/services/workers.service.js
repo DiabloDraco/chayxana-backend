@@ -44,7 +44,11 @@ const updateItem = async ({ name, description, photo, id }) => {
 
 const createItem = async ({ name, description, photo }) => {
   try {
-    const item = await WorkersModel.create({ name, description, photo });
+    const item = await WorkersModel.create({
+      name,
+      position: description,
+      photo,
+    });
     return item;
   } catch (error) {
     throw new Error(error);
