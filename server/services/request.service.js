@@ -141,7 +141,7 @@ const createRequest = async (
         },
       });
 
-      findedUser.cashback += finalPrice;
+      findedUser.cashback += finalPrice * 0.02;
       await findedUser.save();
     } else if (findedPromo) {
       findedPromo.count -= 1;
