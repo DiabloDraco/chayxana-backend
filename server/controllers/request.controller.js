@@ -23,6 +23,9 @@ const POST = async (req, res) => {
       delivery_range,
       promo,
       payment_type,
+      entrance,
+      floor,
+      room,
     } = req.body;
 
     const user = req.user.id;
@@ -39,7 +42,10 @@ const POST = async (req, res) => {
       user,
       delivery_range,
       promo,
-      payment_type
+      payment_type,
+      entrance,
+      floor,
+      room
     );
 
     if (request instanceof Error) {

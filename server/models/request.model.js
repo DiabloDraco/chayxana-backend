@@ -77,6 +77,15 @@ const RequestModel = sequelize.define(
     delivery_time: {
       type: DataTypes.STRING,
     },
+    entrance: {
+      type: DataTypes.STRING,
+    },
+    floor: {
+      type: DataTypes.STRING,
+    },
+    room: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: true,

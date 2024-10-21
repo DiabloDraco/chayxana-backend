@@ -47,7 +47,10 @@ const createRequest = async (
   user,
   delivery_range,
   promo,
-  payment_type
+  payment_type,
+  entrance,
+  floor,
+  room
 ) => {
   try {
     const findedPromo = await PromoModel.findOne({
@@ -130,6 +133,9 @@ const createRequest = async (
         discount_id: finded ? null : discountAmount.discount_id,
         target,
         user_id: user,
+        entrance,
+        floor,
+        room,
       },
       { returning: true }
     );
