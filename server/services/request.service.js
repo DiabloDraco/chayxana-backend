@@ -118,7 +118,7 @@ const createRequest = async (
     const discountAmount = await applyDiscount(full_price);
 
     const finalPrice = findedPromo
-      ? (full_price - discountAmount.discounted) / findedPromo.discount
+      ? (full_price - discountAmount.discounted) * (findedPromo.discount / 100)
       : full_price - discountAmount.discounted;
 
     const request = await RequestModel.create(
