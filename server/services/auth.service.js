@@ -116,6 +116,7 @@ const registerUser = async ({
     user.password = password || user.password;
     user.password = referal || user.referal;
     user.role_id = 4;
+    user.parent_id = parent ? parent.id : null;
 
     return await user.save();
   } catch (error) {
