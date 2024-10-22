@@ -4,6 +4,7 @@ import {
   createItem,
   updateItem,
   deleteItem,
+  checkPromo,
 } from "../services/promo.service.js";
 
 const GET = async (req, res) => {
@@ -20,6 +21,15 @@ const GETID = async (req, res) => {
     const { id } = req.params;
     const item = await findOne(id);
     return res.status(200).send(item);
+  } catch (error) {
+    return res.status(400).send({ message: error.message });
+  }
+};
+
+const CHECKPROMO = async (req, res) => {
+  try {
+    const items = await checkPromo({ promo_code: req.query.promo_code });
+    return res.status(200).send(items);
   } catch (error) {
     return res.status(400).send({ message: error.message });
   }
@@ -62,4 +72,4 @@ const DELETE = async (req, res) => {
   }
 };
 
-export { GET, GETID, CREATE, UPDATE, DELETE };
+export { GET, GETID, CREATE, UPDATE, DELETE, CHECKPROMO };

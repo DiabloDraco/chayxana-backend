@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import PromoModel from "../models/promo.model.js";
 
 const findAll = async () => {
@@ -15,6 +16,25 @@ const findOne = async (id) => {
 
     if (!item) return new Error("Не найдено");
     return item;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const checkPromo = async ({ promo_code }) => {
+  try {
+    const item = await PromoModel.findOne({
+      where: {
+        promo_code,
+        [Op.or]: [{ count: { [Op.gt]: 0 } }, { is_infinite: true }],
+      },
+    });
+
+    if (item) {
+      return item;
+    } else {
+      throw new Error("Такого промокода не существует!");
+    }
   } catch (error) {
     throw new Error(error);
   }
@@ -62,4 +82,4 @@ const deleteItem = async ({ id }) => {
   }
 };
 
-export { findAll, findOne, createItem, updateItem, deleteItem };
+export { findAll, findOne, createItem, updateItem, deleteItem, checkPromo };

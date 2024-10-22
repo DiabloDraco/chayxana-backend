@@ -3,9 +3,10 @@ import {
   DELETE,
   GET,
   GETID,
-  POST,
+  CREATE,
   UPDATE,
-} from "../controllers/product.controller.js";
+  CHECKPROMO,
+} from "../controllers/promo.controller.js";
 import auth from "../middlewares/auth.global.js";
 
 const router = Router();
@@ -14,7 +15,9 @@ router.get("/promo", auth, GET);
 
 router.get("/promo/:id", auth, GETID);
 
-router.post("/promo", auth, POST);
+router.get("/promo/check", auth, CHECKPROMO);
+
+router.post("/promo", auth, CREATE);
 
 router.patch("/promo/:id", auth, UPDATE);
 
