@@ -69,7 +69,8 @@ const sendRegisterCode = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { name, birth_date, gender, login, phone, code, password } = req.body;
+    const { name, birth_date, gender, login, phone, code, password, referal } =
+      req.body;
 
     if (!name || !birth_date || !gender || !login || !phone || !code)
       throw new Error("All datas is required");
@@ -82,6 +83,7 @@ const register = async (req, res) => {
       password,
       phone,
       code,
+      referal,
     });
 
     const tokens = await loginAdmin(login, password);

@@ -92,11 +92,30 @@ const UserModel = sequelize.define(
         return Number(rawValue);
       },
     },
+    referralCode: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
   },
   {
     underscored: true,
     timestamps: true,
   }
 );
+
+UserModel.beforeCreate(async (user) => {
+  let referralCode;
+  let isUnique = false;
+
+  while (!isUnique) {
+    referralCode = generateReferralCode();
+    const existingUser = await UserModel.findOne({ where: { referralCode } });
+    if (!existingUser) {
+      isUnique = true;
+    }
+  }
+
+  user.referralCode = referralCode;
+});
 
 export default UserModel;
