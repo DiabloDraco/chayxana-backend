@@ -15,7 +15,7 @@ router.get("/promo", auth, GET);
 
 router.get("/promo/:id", auth, GETID);
 
-router.get("/promo/check", auth, CHECKPROMO);
+router.get("/check/promo", auth, CHECKPROMO);
 
 router.post("/promo", auth, CREATE);
 

@@ -36,7 +36,7 @@ const checkPromo = async ({ promo_code }) => {
       throw new Error("Такого промокода не существует!");
     }
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
