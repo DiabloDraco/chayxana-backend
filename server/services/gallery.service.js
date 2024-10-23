@@ -2,7 +2,9 @@ import GalleryModel from "../models/gallery.model.js";
 
 const findAll = async () => {
   try {
-    const items = await GalleryModel.findAll();
+    const items = await GalleryModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);

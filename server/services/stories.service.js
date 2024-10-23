@@ -2,7 +2,9 @@ import StoriesModel from "../models/stories.model.js";
 
 const findAll = async () => {
   try {
-    const items = await StoriesModel.findAll();
+    const items = await StoriesModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);

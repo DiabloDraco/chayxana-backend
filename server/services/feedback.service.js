@@ -2,7 +2,9 @@ import FeedbacksModel from "../models/feedback.model.js";
 
 const findAll = async () => {
   try {
-    const items = await FeedbacksModel.findAll();
+    const items = await FeedbacksModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);

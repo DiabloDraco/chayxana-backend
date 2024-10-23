@@ -2,7 +2,9 @@ import WorkersModel from "../models/workers.model.js";
 
 const findAll = async () => {
   try {
-    const items = await WorkersModel.findAll();
+    const items = await WorkersModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);
