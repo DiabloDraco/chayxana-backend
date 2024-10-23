@@ -3,7 +3,9 @@ import PromoModel from "../models/promo.model.js";
 
 const findAll = async () => {
   try {
-    const items = await PromoModel.findAll();
+    const items = await PromoModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);
