@@ -65,7 +65,7 @@ const UPDATE = async (req, res) => {
 const DELETE = async (req, res) => {
   try {
     const { id } = req.params;
-    const item = await deleteItem(id);
+    const item = await deleteItem({ id });
     return res.status(200).send(item);
   } catch (error) {
     return res.status(400).send({ message: error.message });
