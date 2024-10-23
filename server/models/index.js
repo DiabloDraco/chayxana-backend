@@ -6,6 +6,7 @@ import RoleModel from "./role.model.js";
 import RequestModel from "./request.model.js";
 import OrderModel from "./order.model.js";
 import DiscountModel from "./discount.model.js";
+import "./stories.model.js";
 import "./tables.model.js";
 import "./lists.model.js";
 import "./workers.model.js";
