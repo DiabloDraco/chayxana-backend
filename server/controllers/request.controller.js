@@ -4,6 +4,7 @@ import {
   findOne,
   updateItem,
   findDiscount,
+  findOneUser,
 } from "../services/request.service.js";
 import { sendMessageToChannel } from "../plugins/telegram.js";
 import { getIO } from "../plugins/socket.js";
@@ -63,6 +64,15 @@ const POST = async (req, res) => {
 const GET = async (req, res) => {
   try {
     const items = await findAll();
+    return res.status(200).send(items);
+  } catch (error) {
+    return res.status(400).send({ message: error.message });
+  }
+};
+
+const GETUSER = async (req, res) => {
+  try {
+    const items = await findOneUser({ user_id: req.user.id });
     return res.status(200).send(items);
   } catch (error) {
     return res.status(400).send({ message: error.message });
@@ -138,4 +148,4 @@ const CALLBACK = async (req, res) => {
   }
 };
 
-export { POST, GET, GETID, UPDATE, CHECK, CALLBACK };
+export { POST, GET, GETID, UPDATE, CHECK, CALLBACK, GETUSER };

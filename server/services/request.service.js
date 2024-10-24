@@ -297,6 +297,39 @@ const findOne = async (id) => {
   }
 };
 
+const findOneUser = async ({ user_id }) => {
+  try {
+    const orders = await RequestModel.findAll({
+      include: [
+        {
+          model: OrderModel,
+          as: "items",
+          include: [
+            {
+              model: ProductModel,
+              as: "product",
+              attributes: ["price", "name", "photo"],
+            },
+          ],
+        },
+        {
+          model: DiscountModel,
+          as: "discount",
+          attributes: ["percentage"],
+        },
+      ],
+      where: {
+        user_id,
+      },
+      order: [["created_at", "DESC"]],
+    });
+
+    return orders;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 const updateItem = async (id, status) => {
   try {
     const order = await RequestModel.findOne({ where: { id } });
@@ -312,4 +345,11 @@ const updateItem = async (id, status) => {
   }
 };
 
-export { createRequest, findAll, findOne, updateItem, findDiscount };
+export {
+  createRequest,
+  findAll,
+  findOne,
+  updateItem,
+  findDiscount,
+  findOneUser,
+};

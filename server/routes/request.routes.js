@@ -6,6 +6,7 @@ import {
   POST,
   UPDATE,
   CALLBACK,
+  GETUSER,
 } from "../controllers/request.controller.js";
 import auth from "../middlewares/auth.global.js";
 
@@ -14,6 +15,8 @@ const router = Router();
 router.post("/request", auth, POST);
 
 router.get("/request", auth, GET);
+
+router.get("/request/user", auth, GETUSER);
 
 router.get("/request/:id", GETID);
 
