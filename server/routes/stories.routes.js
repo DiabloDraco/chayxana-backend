@@ -11,14 +11,14 @@ import multer from "../plugins/multer.js";
 
 const router = Router();
 
-router.get("/storeis", GET);
+router.get("/stories", GET);
 
-router.get("/storeis/:id", GETID);
+router.get("/stories/:id", GETID);
 
-router.post("/storeis", auth, multer.single("photo"), POST);
+router.post("/stories", auth, multer.single("photo"), POST);
 
-router.patch("/storeis/:id", auth, multer.single("photo"), PUT);
+router.patch("/stories/:id", auth, multer.single("photo"), PUT);
 
-router.delete("/storeis/:id", auth, DELETE);
+router.delete("/stories/:id", auth, DELETE);
 
 export default router;
