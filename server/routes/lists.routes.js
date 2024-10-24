@@ -16,6 +16,6 @@ router.get("/lists/tables", GETTABLES);
 
 router.post("/lists/tables", auth, POSTTABLE);
 
-router.delete("/lists/tables", auth, DELETETABLE);
+router.delete("/lists/tables/:id", auth, DELETETABLE);
 
 export default router;

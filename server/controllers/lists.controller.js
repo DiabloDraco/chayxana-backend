@@ -37,7 +37,7 @@ const POSTTABLE = async (req, res) => {
 
 const DELETETABLE = async (req, res) => {
   try {
-    const { table_id } = req.body;
+    const table_id = req.params.id;
 
     const item = await deleteTableItem({ table_id });
     res.status(200).send(item);
