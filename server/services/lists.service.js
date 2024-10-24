@@ -41,6 +41,7 @@ const createTableItem = async ({ table_id }) => {
     const item = await ListsModel.create({
       type_id: 2,
       val01: table_id,
+      id: table_id,
     });
     return item;
   } catch (error) {
