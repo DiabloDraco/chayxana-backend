@@ -37,13 +37,14 @@ const CHECKPROMO = async (req, res) => {
 
 const CREATE = async (req, res) => {
   try {
-    const { promo_code, count, expired_at, is_infinite } = req.body;
+    const { promo_code, count, expired_at, is_infinite, discount } = req.body;
 
     const item = await createItem({
       promo_code,
       count,
       expired_at,
       is_infinite,
+      discount,
     });
     return res.status(200).send(item);
   } catch (error) {
@@ -54,8 +55,14 @@ const CREATE = async (req, res) => {
 const UPDATE = async (req, res) => {
   try {
     const { id } = req.params;
-    const { count, expired_at, is_infinite } = req.body;
-    const item = await updateItem({ id, count, expired_at, is_infinite });
+    const { count, expired_at, is_infinite, discount } = req.body;
+    const item = await updateItem({
+      id,
+      count,
+      expired_at,
+      is_infinite,
+      discount,
+    });
     return res.status(200).send(item);
   } catch (error) {
     return res.status(400).send({ message: error.message });

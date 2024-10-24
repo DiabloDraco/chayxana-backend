@@ -42,10 +42,16 @@ const checkPromo = async ({ promo_code }) => {
   }
 };
 
-const createItem = async ({ promo_code, count, expired_at, is_infinite }) => {
+const createItem = async ({
+  promo_code,
+  count,
+  expired_at,
+  is_infinite,
+  discount,
+}) => {
   try {
     const item = await PromoModel.create(
-      { promo_code, count, expired_at, is_infinite },
+      { promo_code, count, expired_at, is_infinite, discount },
       { returning: true }
     );
 
@@ -57,13 +63,14 @@ const createItem = async ({ promo_code, count, expired_at, is_infinite }) => {
   }
 };
 
-const updateItem = async ({ id, count, expired_at, is_infinite }) => {
+const updateItem = async ({ id, count, expired_at, is_infinite, discount }) => {
   try {
     const item = await PromoModel.findOne({ where: { id } });
     if (!item) return new Error("Не найдено");
     item.count = count || item.count;
     item.expired_at = expired_at || item.expired_at;
     item.is_infinite = is_infinite || item.is_infinite;
+    item.discount = discount || item.discount;
 
     const saved = await item.save();
     return saved;
