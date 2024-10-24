@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import ListsModel from "../models/lists.model.js";
 
 const findAllBranches = async () => {
@@ -26,7 +27,7 @@ const findAllTables = async () => {
   try {
     const items = await ListsModel.findAll({
       where: { type_id: 2 },
-      attributes: ["id", "created_at"],
+      attributes: ["val01", "created_at"],
     });
 
     return items;
@@ -35,4 +36,29 @@ const findAllTables = async () => {
   }
 };
 
-export { findAllBranches, findAllTables };
+const createTableItem = async ({ table_id }) => {
+  try {
+    const item = await ListsModel.create({
+      type_id: 2,
+      val01: table_id,
+    });
+    return item;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const deleteTableItem = async ({ table_id }) => {
+  try {
+    const item = await ListsModel.destroy({
+      where: {
+        [Op.and]: [{ val01: table_id }, { type_id: 2 }],
+      },
+    });
+    return item;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { findAllBranches, findAllTables, createTableItem, deleteTableItem };

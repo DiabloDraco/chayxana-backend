@@ -5,6 +5,7 @@ import {
   updateItem,
   createItem,
 } from "../services/tables.service.js";
+import { getIO } from "../plugins/socket.js";
 
 const GET = async (req, res) => {
   try {
@@ -34,6 +35,7 @@ const POST = async (req, res) => {
     if (!is_account || !table_id) {
       throw new Error("All datas is required");
     }
+    await getIO().emit("newTable");
 
     const item = await createItem({ is_account, table_id });
     res.status(200).send(item);
@@ -44,10 +46,10 @@ const POST = async (req, res) => {
 
 const PUT = async (req, res) => {
   try {
-    const { is_account, table_id } = req.body;
+    const { is_account, table_id, isWatched } = req.body;
     const { id } = req.params;
 
-    const item = await updateItem({ is_account, table_id, id });
+    const item = await updateItem({ is_account, table_id, isWatched, id });
 
     res.status(200).send(item);
   } catch (error) {

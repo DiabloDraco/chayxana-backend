@@ -28,12 +28,13 @@ const deleteItem = async ({ id }) => {
   }
 };
 
-const updateItem = async ({ is_account, table_id, id }) => {
+const updateItem = async ({ is_account, table_id, isWatched, id }) => {
   try {
     const item = await TablesModel.findOne({ where: { id } });
     if (!item) return new Error("Item not found");
     item.is_account = is_account || item.is_account;
     item.table_id = table_id || item.table_id;
+    item.is_watched = isWatched || item.is_watched;
     const saved = await item.save();
     return saved;
   } catch (error) {

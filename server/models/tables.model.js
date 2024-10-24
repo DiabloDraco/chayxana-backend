@@ -27,6 +27,10 @@ const TablesModel = sequelize.define("tables", {
   table_id: {
     type: DataTypes.BIGINT,
   },
+  is_watched: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
 });
 
 export default TablesModel;

@@ -10,7 +10,7 @@ import auth from "../middlewares/auth.global.js";
 
 const router = Router();
 
-router.post("/tables", GET);
+router.get("/tables", GET);
 
 router.post("/tables/:id", GETID);
 

@@ -1,4 +1,9 @@
-import { findAllBranches, findAllTables } from "../services/lists.service.js";
+import {
+  findAllBranches,
+  findAllTables,
+  createTableItem,
+  deleteTableItem,
+} from "../services/lists.service.js";
 const GETBRANCHES = async (req, res) => {
   try {
     const items = await findAllBranches();
@@ -19,4 +24,26 @@ const GETTABLES = async (req, res) => {
   }
 };
 
-export { GETBRANCHES, GETTABLES };
+const POSTTABLE = async (req, res) => {
+  try {
+    const { table_id } = req.body;
+
+    const item = await createTableItem({ table_id });
+    res.status(200).send(item);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const DELETETABLE = async (req, res) => {
+  try {
+    const { table_id } = req.body;
+
+    const item = await deleteTableItem({ table_id });
+    res.status(200).send(item);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+export { GETBRANCHES, GETTABLES, POSTTABLE, DELETETABLE };
