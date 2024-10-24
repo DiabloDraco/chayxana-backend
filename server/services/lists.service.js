@@ -51,11 +51,14 @@ const createTableItem = async ({ table_id }) => {
 
 const deleteTableItem = async ({ table_id }) => {
   try {
-    const item = await ListsModel.destroy({
+    const item = await ListsModel.findOne({
       where: {
         [Op.and]: [{ val01: table_id }, { type_id: 2 }],
       },
     });
+    if (!item) return new Error("Item not found");
+
+    item.destroy();
     return item;
   } catch (error) {
     throw new Error(error);
