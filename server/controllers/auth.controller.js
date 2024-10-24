@@ -70,7 +70,7 @@ const register = async (req, res) => {
     const { name, birth_date, gender, login, phone, code, password, referal } =
       req.body;
 
-    if (!name || !birth_date || !gender || !login || !phone || !code)
+    if (!name || !login || !phone || !code)
       throw new Error("All datas is required");
 
     const user = await registerUser({
