@@ -57,8 +57,6 @@ const sendRegisterCode = async (req, res) => {
 
     const user = await registerCode({ code, phone });
 
-    console.log(code);
-
     await sendMessageToAuthChannel(`${code}`);
 
     res.status(200).send("Code sended");

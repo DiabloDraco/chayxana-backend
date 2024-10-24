@@ -103,6 +103,25 @@ const UserModel = sequelize.define(
   }
 );
 
+function generateReferralCode() {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Набор букв
+  const digits = "0123456789"; // Набор цифр
+
+  let code = "";
+
+  // Генерируем 6 букв
+  for (let i = 0; i < 6; i++) {
+    code += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+
+  // Генерируем 2 цифры
+  for (let i = 0; i < 2; i++) {
+    code += digits.charAt(Math.floor(Math.random() * digits.length));
+  }
+
+  return code;
+}
+
 UserModel.beforeCreate(async (user) => {
   let referralCode;
   let isUnique = false;
