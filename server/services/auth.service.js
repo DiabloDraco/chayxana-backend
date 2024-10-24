@@ -112,7 +112,6 @@ const registerUser = async ({
     user.gender = gender || user.gender;
     user.login = login || user.login;
     user.password = password || user.password;
-    user.password = referal || user.referal;
     user.role_id = 4;
     if (referal) {
       const parent = await UserModel.findOne({
