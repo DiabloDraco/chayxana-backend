@@ -27,7 +27,7 @@ const findAllTables = async () => {
   try {
     const items = await ListsModel.findAll({
       where: { type_id: 2 },
-      attributes: ["val01", "created_at"],
+      attributes: [["val01", "table_id"], "created_at"],
     });
 
     return items;
