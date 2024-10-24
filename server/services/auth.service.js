@@ -104,9 +104,7 @@ const registerUser = async ({
 }) => {
   try {
     const user = await UserModel.findOne({ where: { phone, code } });
-    const parent = await UserModel.findOne({
-      where: { referralCode: referal },
-    });
+
     if (!user) throw new Error("User not found");
 
     user.name = name || user.name;
@@ -116,7 +114,12 @@ const registerUser = async ({
     user.password = password || user.password;
     user.password = referal || user.referal;
     user.role_id = 4;
-    user.parent_id = parent ? parent.id : null;
+    if (referal) {
+      const parent = await UserModel.findOne({
+        where: { referralCode: referal },
+      });
+      user.parent_id = parent ? parent.id : null;
+    }
 
     return await user.save();
   } catch (error) {
