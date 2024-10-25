@@ -32,7 +32,7 @@ const POST = async (req, res) => {
   try {
     const { is_account, table_id } = req.body;
 
-    if (!is_account || !table_id) {
+    if (!table_id) {
       throw new Error("All datas is required");
     }
     await getIO().emit("newTable");
