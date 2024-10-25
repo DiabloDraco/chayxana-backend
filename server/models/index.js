@@ -6,13 +6,14 @@ import RoleModel from "./role.model.js";
 import RequestModel from "./request.model.js";
 import OrderModel from "./order.model.js";
 import DiscountModel from "./discount.model.js";
+import UserPromoModel from "./userPromo.model.js";
 import "./stories.model.js";
 import "./tables.model.js";
 import "./lists.model.js";
 import "./workers.model.js";
 import "./gallery.model.js";
 import "./feedback.model.js";
-import "./promo.model.js";
+import PromoModel from "./promo.model.js";
 
 UserModel.belongsTo(RoleModel, {
   foreignKey: "role_id",
@@ -52,6 +53,16 @@ RequestModel.hasMany(OrderModel, {
 RequestModel.belongsTo(DiscountModel, {
   foreignKey: "discount_id",
   as: "discount",
+});
+
+UserPromoModel.belongsTo(UserModel, {
+  foreignKey: "user_id",
+  as: "user",
+});
+
+UserPromoModel.belongsTo(PromoModel, {
+  foreignKey: "promo_id",
+  as: "promo",
 });
 
 sequelize.sync({ alter: true });

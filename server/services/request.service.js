@@ -35,6 +35,70 @@ const applyDiscount = async (totalAmount) => {
   }
 };
 
+const createOrder = async ({
+  orders,
+  phone,
+  address,
+  branch,
+  comment,
+  name,
+  delivery_id,
+  target,
+  user,
+  delivery_range,
+  promo,
+  entrance,
+  floor,
+  room,
+}) => {
+  try {
+    const delivery_price =
+      delivery_range == 1
+        ? 350
+        : delivery_range == 2
+        ? 450
+        : delivery_range == 3
+        ? 550
+        : 0;
+
+    const findedPromo = await PromoModel.findOne({
+      where: {
+        promo_code: promo,
+        [Op.or]: [
+          {
+            count: {
+              [Op.gt]: 0,
+            },
+          },
+          {
+            is_infinite: {
+              [Op.eq]: true,
+            },
+          },
+        ],
+        expired_at: {
+          [Op.gte]: new Date(),
+        },
+      },
+    });
+
+    if (promo && !findedPromo) {
+      throw new Error("Такого промокода не существует!");
+    }
+
+    const finded = await RequestModel.findOne({
+      where: {
+        phone,
+        status: {
+          [Op.ne]: "cancelled",
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 const createRequest = async (
   orders,
   phone,
@@ -82,6 +146,7 @@ const createRequest = async (
         : delivery_range == 3
         ? 550
         : 0;
+
     const getProductPrice = async (productId, quantity) => {
       const product = await ProductModel.findOne({
         attributes: ["price"],
