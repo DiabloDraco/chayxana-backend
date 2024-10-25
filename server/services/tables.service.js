@@ -2,7 +2,9 @@ import TablesModel from "../models/tables.model.js";
 
 const findAll = async () => {
   try {
-    const items = await TablesModel.findAll();
+    const items = await TablesModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
     return items;
   } catch (error) {
     throw new Error(error);
