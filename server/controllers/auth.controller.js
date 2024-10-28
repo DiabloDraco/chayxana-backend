@@ -2,7 +2,6 @@ import {
   me,
   loginAdmin,
   findAllRoles,
-  registerCode,
   registerUser,
 } from "../services/auth.service.js";
 import { sendMessageToAuthChannel } from "../plugins/telegram.js";
@@ -47,24 +46,6 @@ const getRoles = async (req, res) => {
   }
 };
 
-const sendRegisterCode = async (req, res) => {
-  try {
-    const { phone } = req.body;
-
-    if (!phone) throw new Error("All datas is required");
-
-    const code = Math.floor(1000 + Math.random() * 9000);
-
-    const user = await registerCode({ code, phone });
-
-    await sendMessageToAuthChannel(`${code}`);
-
-    res.status(200).send("Code sended");
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-};
-
 const register = async (req, res) => {
   try {
     const { name, phone, password, referal, mail } = req.body;
@@ -87,4 +68,4 @@ const register = async (req, res) => {
   }
 };
 
-export { login, myUser, getRoles, sendRegisterCode, register };
+export { login, myUser, getRoles, register };

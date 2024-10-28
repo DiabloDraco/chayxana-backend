@@ -4,7 +4,6 @@ import {
   login,
   myUser,
   register,
-  sendRegisterCode,
 } from "../controllers/auth.controller.js";
 import auth from "../middlewares/auth.global.js";
 import multer from "../plugins/multer.js";
@@ -60,22 +59,6 @@ router.post("/login", login);
 router.get("/me", auth, myUser);
 
 router.get("/roles", auth, getRoles);
-
-/**
- * @swagger
- * /api/register/send:
- *   post:
- *     summary: Get user info
- *     security:
- *       - bearerAuth: []
- *     tags: [Auth]
- *     responses:
- *       200:
- *         description: Register message
- *       400:
- *         description: Error message
- */
-router.post("/register/send", sendRegisterCode);
 
 /**
  * @swagger
