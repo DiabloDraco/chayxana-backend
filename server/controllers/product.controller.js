@@ -6,6 +6,7 @@ import {
   updateItem,
   findAllByCategory,
   findSearch,
+  findAllBySort,
 } from "../services/product.service.js";
 import deletePhoto from "../plugins/file.js";
 
@@ -15,6 +16,22 @@ const GET = async (req, res) => {
     let items;
     if (category_id) {
       items = await findAllByCategory(category_id);
+    } else {
+      items = await findAll();
+    }
+
+    res.status(200).send(items);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const GETUSER = async (req, res) => {
+  try {
+    const { category_id } = req.query;
+    let items;
+    if (category_id) {
+      items = await findAllBySort(category_id);
     } else {
       items = await findAll();
     }
@@ -165,4 +182,4 @@ const SEARCH = async (req, res) => {
   }
 };
 
-export { GET, GETID, POST, UPDATE, DELETE, SEARCH };
+export { GET, GETID, POST, UPDATE, DELETE, SEARCH, GETUSER };

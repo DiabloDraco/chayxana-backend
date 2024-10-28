@@ -1,5 +1,6 @@
 import { Op } from "sequelize";
 import ProductModel from "../models/product.model.js";
+import ProductCategoryModel from "../models/productCategory.model.js";
 
 const findAll = async () => {
   try {
@@ -41,6 +42,27 @@ const findAllByCategory = async (category_id) => {
       });
       return items;
     }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const findAllBySort = async () => {
+  try {
+    const items = await ProductModel.findAll({
+      order: [
+        ["category_id", "ASC"],
+        ["sort_order", "ASC"],
+      ],
+      include: [
+        {
+          model: ProductCategoryModel,
+          as: "category",
+          order: [["sort_order", "ASC"]],
+        },
+      ],
+    });
+    return items;
   } catch (error) {
     throw new Error(error);
   }
@@ -162,4 +184,5 @@ export {
   deleteItem,
   findAllByCategory,
   findSearch,
+  findAllBySort,
 };

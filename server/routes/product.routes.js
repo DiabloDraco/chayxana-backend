@@ -3,6 +3,7 @@ import {
   DELETE,
   GET,
   GETID,
+  GETUSER,
   POST,
   SEARCH,
   UPDATE,
@@ -33,6 +34,8 @@ const router = Router();
  *         description: Error message
  */
 router.get("/product", GET);
+
+router.get("/product/sort", GETUSER);
 
 /**
  * @swagger
