@@ -51,14 +51,14 @@ const findAllBySort = async () => {
   try {
     const items = await ProductModel.findAll({
       order: [
-        ["category_id", "ASC"],
-        ["sort_order", "ASC"],
+        ["category_id", "DESC"],
+        ["sort_order", "DESC"],
       ],
       include: [
         {
           model: ProductCategoryModel,
           as: "category",
-          order: [["sort_order", "ASC"]],
+          order: [["sort_order", "DESC"]],
         },
       ],
     });
