@@ -70,4 +70,4 @@ UserPromoModel.belongsTo(PromoModel, {
   as: "promo",
 });
 
-sequelize.sync({ alter: true });
+sequelize.sync();

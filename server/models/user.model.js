@@ -55,6 +55,7 @@ const UserModel = sequelize.define(
     },
     phone: {
       type: DataTypes.STRING,
+      unique: true,
     },
     photo: {
       type: DataTypes.STRING,
