@@ -30,6 +30,11 @@ ProductModel.belongsTo(ProductCategoryModel, {
   as: "category",
 });
 
+ProductCategoryModel.hasMany(ProductModel, {
+  foreignKey: "category_id",
+  as: "productList",
+});
+
 OrderModel.belongsTo(RequestModel, {
   foreignKey: "request_id",
   as: "request",
