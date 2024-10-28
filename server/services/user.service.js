@@ -64,6 +64,7 @@ const updatePhoto = async ({
   floor,
   room,
   comment,
+  mail,
 }) => {
   try {
     const item = await UserModel.findOne({ where: { id } });
@@ -81,6 +82,7 @@ const updatePhoto = async ({
     item.floor = floor || item.floor;
     item.room = room || item.room;
     item.comment = comment || item.comment;
+    item.mail = mail || item.mail;
     item.avatar = filename || item.avatar;
 
     const saved = await item.save();

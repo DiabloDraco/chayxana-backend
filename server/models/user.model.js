@@ -92,6 +92,9 @@ const UserModel = sequelize.define(
         return Number(rawValue);
       },
     },
+    mail: {
+      type: DataTypes.STRING,
+    },
     referralCode: {
       type: DataTypes.STRING,
       unique: true,

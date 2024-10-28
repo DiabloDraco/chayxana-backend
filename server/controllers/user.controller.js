@@ -75,6 +75,7 @@ const UPADTEPHOTO = async (req, res) => {
         floor,
         room,
         comment,
+        mail,
       });
       res.status(200).send("Файл успешно обновлен и старый файл удален.");
     } else {
@@ -93,6 +94,7 @@ const UPADTEPHOTO = async (req, res) => {
         floor,
         room,
         comment,
+        mail,
       });
 
       res.status(200).send("ßуспешно обновлен.");
