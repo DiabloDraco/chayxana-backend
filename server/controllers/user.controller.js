@@ -49,7 +49,20 @@ const DELETE = async (req, res) => {
 const UPADTEPHOTO = async (req, res) => {
   try {
     const { id } = req.params;
-    const { login, name, surname, password, role_id } = req.body;
+    const {
+      login,
+      name,
+      surname,
+      birth_date,
+      gender,
+      address,
+      position,
+      entrance,
+      floor,
+      room,
+      comment,
+      mail,
+    } = req.body;
     if (!id) return new Error("Id не обнаружен");
     if (req.file) {
       const filename = req.file.filename;
@@ -64,8 +77,6 @@ const UPADTEPHOTO = async (req, res) => {
         login,
         name,
         surname,
-        password,
-        role_id,
         id,
         birth_date,
         gender,
@@ -83,8 +94,6 @@ const UPADTEPHOTO = async (req, res) => {
         login,
         name,
         surname,
-        password,
-        role_id,
         id,
         birth_date,
         gender,

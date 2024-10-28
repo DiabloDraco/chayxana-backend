@@ -54,8 +54,6 @@ const updatePhoto = async ({
   login,
   name,
   surname,
-  password,
-  role_id,
   birth_date,
   gender,
   address,
@@ -72,8 +70,6 @@ const updatePhoto = async ({
     item.login = login || item.login;
     item.name = name || item.name;
     item.surname = surname || item.surname;
-    item.password = password || item.password;
-    item.role_id = role_id || item.role_id;
     item.birth_date = birth_date || item.birth_date;
     item.gender = gender || item.gender;
     item.address = address || item.address;
