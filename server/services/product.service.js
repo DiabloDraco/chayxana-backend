@@ -47,26 +47,24 @@ const findAllByCategory = async (category_id) => {
   }
 };
 
-const findAllBySort = async () => {
+async function findAllBySort() {
   try {
-    const items = await ProductModel.findAll({
-      order: [
-        ["category_id", "DESC"],
-        ["sort_order", "DESC"],
-      ],
+    const products = await ProductModel.findAll({
       include: [
         {
           model: ProductCategoryModel,
-          as: "category",
-          order: [["sort_order", "DESC"]],
+          as: "product_category",
+          attributes: ["id", "name", "sort_order"],
         },
       ],
+      order: [[ProductCategoryModel, "sort_order", "ASC"]],
     });
-    return items;
+
+    return products;
   } catch (error) {
-    throw new Error(error);
+    console.error("Ошибка при получении продуктов:", error);
   }
-};
+}
 
 const findOne = async (id) => {
   try {
