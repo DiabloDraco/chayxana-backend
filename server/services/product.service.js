@@ -57,7 +57,7 @@ async function findAllBySort() {
           attributes: ["id", "name", "sort_order"],
         },
       ],
-      order: [[ProductCategoryModel, "sort_order", "ASC"]],
+      order: [[ProductCategoryModel, "sort_order", "DESC"]],
     });
 
     return products;
