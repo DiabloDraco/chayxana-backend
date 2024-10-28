@@ -73,6 +73,7 @@ const UserModel = sequelize.define(
         model: "roles", // указываем модель ролей
         key: "id", // ключ в модели ролей
       },
+      defaultValue: 4,
     },
     parent_id: {
       type: DataTypes.BIGINT,

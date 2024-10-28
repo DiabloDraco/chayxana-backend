@@ -86,6 +86,13 @@ const RequestModel = sequelize.define(
     room: {
       type: DataTypes.STRING,
     },
+    delivery_by: {
+      type: DataTypes.BIGINT,
+      references: {
+        model: "users",
+        key: "id",
+      },
+    },
   },
   {
     timestamps: true,

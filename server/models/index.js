@@ -70,4 +70,14 @@ UserPromoModel.belongsTo(PromoModel, {
   as: "promo",
 });
 
+RequestModel.belongsTo(UserModel, {
+  foreignKey: "delivery_by",
+  as: "courier",
+});
+
+UserModel.hasMany(RequestModel, {
+  foreignKey: "delivery_by",
+  as: "requests",
+});
+
 sequelize.sync();
