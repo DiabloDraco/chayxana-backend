@@ -7,7 +7,7 @@ const loginAdmin = async (login, password) => {
   try {
     const user = await UserModel.findOne({
       where: {
-        login,
+        phone: login,
         password,
       },
       include: [
@@ -73,15 +73,7 @@ const findAllRoles = async () => {
   }
 };
 
-const registerUser = async ({
-  name,
-  birth_date,
-  gender,
-  login,
-  password,
-  phone,
-  referal,
-}) => {
+const registerUser = async ({ name, password, phone, referal, mail }) => {
   try {
     if (referal) {
       const parent = await UserModel.findOne({
@@ -90,26 +82,22 @@ const registerUser = async ({
 
       const user = await UserModel.create({
         name,
-        birth_date,
-        gender,
-        login,
         password,
         phone,
         parent_id: parent ? parent.id : null,
         role_id: 4,
+        mail,
       });
 
       return await user.save();
     } else {
       const user = await UserModel.create({
         name,
-        birth_date,
-        gender,
-        login,
         password,
         phone,
         parent_id: null,
         role_id: 4,
+        mail,
       });
 
       return await user.save();
