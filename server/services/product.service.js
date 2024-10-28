@@ -51,6 +51,13 @@ const findAllBySort = async () => {
   try {
     const products = await ProductCategoryModel.findAll({
       order: [["sort_order", "ASC"]],
+      include: [
+        {
+          model: ProductModel,
+          as: "productList",
+        },
+      ],
+      attributes: ["id", ["name", "catolog_name"]],
     });
 
     return products;
