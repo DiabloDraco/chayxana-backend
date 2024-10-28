@@ -3,7 +3,7 @@ import {
   DELETE,
   GET,
   GETID,
-  GETUSER,
+  GETSORT,
   POST,
   SEARCH,
   UPDATE,
@@ -35,7 +35,7 @@ const router = Router();
  */
 router.get("/product", GET);
 
-router.get("/product/sort", GETUSER);
+router.get("/product/sort", GETSORT);
 
 /**
  * @swagger

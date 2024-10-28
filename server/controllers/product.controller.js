@@ -26,15 +26,9 @@ const GET = async (req, res) => {
   }
 };
 
-const GETUSER = async (req, res) => {
+const GETSORT = async (req, res) => {
   try {
-    const { category_id } = req.query;
-    let items;
-    if (category_id) {
-      items = await findAllBySort(category_id);
-    } else {
-      items = await findAll();
-    }
+    let items = await findAllBySort();
 
     res.status(200).send(items);
   } catch (error) {
@@ -182,4 +176,4 @@ const SEARCH = async (req, res) => {
   }
 };
 
-export { GET, GETID, POST, UPDATE, DELETE, SEARCH, GETUSER };
+export { GET, GETID, POST, UPDATE, DELETE, SEARCH, GETSORT };
