@@ -67,6 +67,14 @@ const UPADTEPHOTO = async (req, res) => {
         password,
         role_id,
         id,
+        birth_date,
+        gender,
+        address,
+        position,
+        entrance,
+        floor,
+        room,
+        comment,
       });
       res.status(200).send("Файл успешно обновлен и старый файл удален.");
     } else {
@@ -77,6 +85,14 @@ const UPADTEPHOTO = async (req, res) => {
         password,
         role_id,
         id,
+        birth_date,
+        gender,
+        address,
+        position,
+        entrance,
+        floor,
+        room,
+        comment,
       });
 
       res.status(200).send("ßуспешно обновлен.");

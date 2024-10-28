@@ -56,6 +56,14 @@ const updatePhoto = async ({
   surname,
   password,
   role_id,
+  birth_date,
+  gender,
+  address,
+  position,
+  entrance,
+  floor,
+  room,
+  comment,
 }) => {
   try {
     const item = await UserModel.findOne({ where: { id } });
@@ -65,6 +73,14 @@ const updatePhoto = async ({
     item.surname = surname || item.surname;
     item.password = password || item.password;
     item.role_id = role_id || item.role_id;
+    item.birth_date = birth_date || item.birth_date;
+    item.gender = gender || item.gender;
+    item.address = address || item.address;
+    item.position = position || item.position;
+    item.entrance = entrance || item.entrance;
+    item.floor = floor || item.floor;
+    item.room = room || item.room;
+    item.comment = comment || item.comment;
     item.avatar = filename || item.avatar;
 
     const saved = await item.save();
