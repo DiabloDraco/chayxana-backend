@@ -73,25 +73,6 @@ const findAllRoles = async () => {
   }
 };
 
-const registerCode = async ({ code, phone }) => {
-  try {
-    const user = await UserModel.findOne({ where: { phone } });
-    if (user) {
-      user.code = code || code;
-      return await user.save();
-    } else {
-      const item = await UserModel.create({
-        code,
-        phone,
-      });
-
-      return item;
-    }
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
 const registerUser = async ({
   name,
   birth_date,
@@ -99,30 +80,42 @@ const registerUser = async ({
   login,
   password,
   phone,
-  code,
   referal,
 }) => {
   try {
-    const user = await UserModel.findOne({ where: { phone, code } });
-
-    if (!user) throw new Error("User not found");
-
-    user.name = name || user.name;
-    user.birth_date = birth_date || user.birth_date;
-    user.gender = gender || user.gender;
-    user.login = login || user.login;
-    user.password = password || user.password;
-    user.role_id = 4;
     if (referal) {
       const parent = await UserModel.findOne({
         where: { referralCode: referal },
       });
-      user.parent_id = parent ? parent.id : null;
-    }
 
-    return await user.save();
+      const user = await UserModel.create({
+        name,
+        birth_date,
+        gender,
+        login,
+        password,
+        phone,
+        parent_id: parent ? parent.id : null,
+        role_id: 4,
+      });
+
+      return await user.save();
+    } else {
+      const user = await UserModel.create({
+        name,
+        birth_date,
+        gender,
+        login,
+        password,
+        phone,
+        parent_id: null,
+        role_id: 4,
+      });
+
+      return await user.save();
+    }
   } catch (error) {
     throw new Error(error);
   }
 };
-export { me, loginAdmin, findAllRoles, registerCode, registerUser };
+export { me, loginAdmin, findAllRoles, registerUser };

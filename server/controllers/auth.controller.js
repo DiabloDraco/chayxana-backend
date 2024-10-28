@@ -67,11 +67,10 @@ const sendRegisterCode = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const { name, birth_date, gender, login, phone, code, password, referal } =
+    const { name, birth_date, gender, login, phone, password, referal } =
       req.body;
 
-    if (!name || !login || !phone || !code)
-      throw new Error("All datas is required");
+    if (!name || !login || !phone) throw new Error("All datas is required");
 
     const user = await registerUser({
       name,
@@ -80,7 +79,6 @@ const register = async (req, res) => {
       login,
       password,
       phone,
-      code,
       referal,
     });
 
