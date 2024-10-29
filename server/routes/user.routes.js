@@ -85,7 +85,7 @@ router.get("/user", auth, GET);
  */
 router.get("/user/:id", auth, GETID);
 
-router.post("/user", auth, POST);
+router.post("/user", auth, multer.single("photo"), POST);
 
 /**
  * @swagger

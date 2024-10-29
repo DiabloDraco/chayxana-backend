@@ -7,7 +7,43 @@ const loginAdmin = async (login, password) => {
   try {
     const user = await UserModel.findOne({
       where: {
-        phone: login,
+        login,
+        password,
+      },
+      include: [
+        {
+          model: RoleModel,
+          as: "role",
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    if (!user.id) return new Error("invalid code");
+
+    let payload = {
+      id: user.id,
+      roles: [user.role.name],
+    };
+
+    const token = await generateToken(payload);
+    const refresh_token = await generateRefreshToken(payload);
+
+    return {
+      message: "success",
+      token,
+      refresh_token,
+    };
+  } catch (error) {
+    throw new Error("Invalid password or login");
+  }
+};
+
+const loginUser = async (phone, password) => {
+  try {
+    const user = await UserModel.findOne({
+      where: {
+        phone,
         password,
       },
       include: [
@@ -106,4 +142,4 @@ const registerUser = async ({ name, password, phone, referal, mail }) => {
     throw new Error(error);
   }
 };
-export { me, loginAdmin, findAllRoles, registerUser };
+export { me, loginAdmin, findAllRoles, registerUser, loginUser };

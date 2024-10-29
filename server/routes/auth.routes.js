@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
   getRoles,
-  login,
+  loginAdmins,
+  loginUsers,
   myUser,
   register,
 } from "../controllers/auth.controller.js";
@@ -40,7 +41,32 @@ const router = Router();
  *       400:
  *         description: Error message
  */
-router.post("/login", login);
+router.post("/login", loginAdmins);
+
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     summary: Get user info
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               login:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User info
+ *       400:
+ *         description: Error message
+ */
+router.post("/login/user", loginUsers);
 
 /**
  * @swagger

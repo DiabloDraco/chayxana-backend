@@ -22,10 +22,18 @@ const findOne = async (id) => {
   }
 };
 
-const insertItem = async ({ name, surname, login, password, role_id }) => {
+const insertItem = async ({
+  name,
+  surname,
+  login,
+  password,
+  role_id,
+  photo,
+  phone,
+}) => {
   try {
     const item = await UserModel.create(
-      { name, surname, login, password, role_id },
+      { name, surname, login, password, role_id, photo, phone },
       { returning: true }
     );
 
@@ -51,7 +59,6 @@ const deleteItem = async ({ id }) => {
 const updatePhoto = async ({
   id,
   filename,
-  login,
   name,
   surname,
   birth_date,
@@ -67,7 +74,6 @@ const updatePhoto = async ({
   try {
     const item = await UserModel.findOne({ where: { id } });
 
-    item.login = login || item.login;
     item.name = name || item.name;
     item.surname = surname || item.surname;
     item.birth_date = birth_date || item.birth_date;

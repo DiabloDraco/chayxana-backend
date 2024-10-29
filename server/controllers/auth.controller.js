@@ -3,16 +3,33 @@ import {
   loginAdmin,
   findAllRoles,
   registerUser,
+  loginUser,
 } from "../services/auth.service.js";
 import { sendMessageToAuthChannel } from "../plugins/telegram.js";
 
-const login = async (req, res) => {
+const loginAdmins = async (req, res) => {
   try {
     const { login, password } = req.body;
 
     if (!login || !password) throw new Error("All datas is required");
 
     const user = await loginAdmin(login, password);
+
+    if (!user) throw new Error("user not found");
+
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(403).send({ message: error.message });
+  }
+};
+
+const loginUsers = async (req, res) => {
+  try {
+    const { phone, password } = req.body;
+
+    if (!phone || !password) throw new Error("All datas is required");
+
+    const user = await loginUser(phone, password);
 
     if (!user) throw new Error("user not found");
 
@@ -68,4 +85,4 @@ const register = async (req, res) => {
   }
 };
 
-export { login, myUser, getRoles, register };
+export { myUser, getRoles, register, loginAdmins, loginUsers };

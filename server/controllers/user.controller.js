@@ -50,7 +50,6 @@ const UPADTEPHOTO = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      login,
       name,
       surname,
       birth_date,
@@ -74,7 +73,6 @@ const UPADTEPHOTO = async (req, res) => {
 
       const newItem = await updatePhoto({
         filename,
-        login,
         name,
         surname,
         id,
@@ -91,7 +89,6 @@ const UPADTEPHOTO = async (req, res) => {
       res.status(200).send("Файл успешно обновлен и старый файл удален.");
     } else {
       const newItem = await updatePhoto({
-        login,
         name,
         surname,
         id,
@@ -115,12 +112,20 @@ const UPADTEPHOTO = async (req, res) => {
 
 const POST = async (req, res) => {
   try {
-    const { name, surname, login, password, role_id } = req.body;
+    const { name, surname, login, password, role_id, phone } = req.body;
+    const { filename } = req.file;
     if (!name || !surname || !login || !password || !role_id)
       return new Error("All datas is required");
 
-    const item = await insertItem({ name, surname, login, password, role_id });
-
+    const item = await insertItem({
+      name,
+      surname,
+      login,
+      password,
+      role_id,
+      phone,
+      photo: filename ? filename : null,
+    });
     res.status(200).send(item);
   } catch (error) {
     res.status(400).send(error);
