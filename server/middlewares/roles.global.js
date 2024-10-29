@@ -4,9 +4,7 @@ const roles = (requiredRoles) => {
 
     const hasRole = requiredRoles.some((role) => roles.includes(role));
     if (!hasRole) {
-      return res
-        .status(403)
-        .json({ message: "Access forbidden: insufficient rights" });
+      return res.status(403).json({ message: "Access forbidden" });
     }
 
     next();
