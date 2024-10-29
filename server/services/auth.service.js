@@ -139,7 +139,7 @@ const registerUser = async ({ name, password, phone, referal, mail }) => {
       return await user.save();
     }
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export { me, loginAdmin, findAllRoles, registerUser, loginUser };

@@ -67,7 +67,7 @@ const register = async (req, res) => {
   try {
     const { name, phone, password, referal, mail } = req.body;
 
-    if (!phone || !mail || !password) throw new Error("All datas is required");
+    if (!phone || !password) throw new Error("All datas is required");
 
     const user = await registerUser({
       name,
