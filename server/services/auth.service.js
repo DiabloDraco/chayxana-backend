@@ -35,7 +35,7 @@ const loginAdmin = async (login, password) => {
       refresh_token,
     };
   } catch (error) {
-    throw new Error("Invalid password or login");
+    throw new Error(error.message);
   }
 };
 
