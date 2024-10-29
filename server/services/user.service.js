@@ -41,7 +41,7 @@ const insertItem = async ({
       password,
       role_id,
       photo,
-      phone,
+      phone: phone ? phone : null,
     });
 
     if (!item) return new Error("Item not created");
