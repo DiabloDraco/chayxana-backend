@@ -77,7 +77,7 @@ const register = async (req, res) => {
       mail,
     });
 
-    const tokens = await loginAdmin(phone, password);
+    const tokens = await loginUser(phone, password);
 
     res.status(201).send(tokens);
   } catch (error) {
