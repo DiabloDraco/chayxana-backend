@@ -1,6 +1,5 @@
 const roles = (requiredRoles) => {
   return (req, res, next) => {
-    if (err) return res.sendStatus(403);
     const roles = req.user.roles;
 
     const hasRole = requiredRoles.some((role) => roles.includes(role));
