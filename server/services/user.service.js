@@ -34,15 +34,20 @@ const insertItem = async ({
   phone,
 }) => {
   try {
-    const item = await UserModel.create(
-      { name, surname, login, password, role_id, photo, phone },
-      { returning: true }
-    );
+    const item = await UserModel.create({
+      name,
+      surname,
+      login,
+      password,
+      role_id,
+      photo,
+      phone,
+    });
 
-    if (!item) return new Error();
+    if (!item) return new Error("Item not created");
     return item;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
