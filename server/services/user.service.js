@@ -3,7 +3,9 @@ import UserModel from "../models/user.model.js";
 
 const findAll = async () => {
   try {
-    const items = await UserModel.findAll();
+    const items = await UserModel.findAll({
+      order: [["created_at", "DESC"]],
+    });
 
     return items;
   } catch (error) {
