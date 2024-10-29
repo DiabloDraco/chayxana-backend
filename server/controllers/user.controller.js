@@ -113,7 +113,7 @@ const UPADTEPHOTO = async (req, res) => {
 const POST = async (req, res) => {
   try {
     const { name, surname, login, password, role_id, phone } = req.body;
-    const { filename } = req.file;
+    const photo = req.file.filename;
     if (!name || !surname || !login || !password || !role_id)
       return new Error("All datas is required");
 
@@ -124,7 +124,7 @@ const POST = async (req, res) => {
       password,
       role_id,
       phone,
-      photo: filename ? filename : null,
+      photo: photo ? photo : null,
     });
     res.status(200).send(item);
   } catch (error) {
