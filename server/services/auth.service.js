@@ -111,12 +111,14 @@ const findAllRoles = async () => {
 
 const registerUser = async ({ name, password, phone, referal, mail }) => {
   try {
-    const isMail = await UserModel.findOne({
-      where: { mail },
-    });
+    if (mail) {
+      const isMail = await UserModel.findOne({
+        where: { mail },
+      });
 
-    if (isMail) {
-      throw new Error("Mail already exists");
+      if (isMail) {
+        throw new Error("Mail already exists");
+      }
     }
     if (referal) {
       const parent = await UserModel.findOne({
