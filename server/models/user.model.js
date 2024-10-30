@@ -102,6 +102,12 @@ const UserModel = sequelize.define(
       type: DataTypes.STRING,
       unique: true,
     },
+    location: {
+      type: DataTypes.JSON,
+    },
+    socketId: {
+      type: DataTypes.STRING,
+    },
   },
   {
     underscored: true,
