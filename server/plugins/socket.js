@@ -33,6 +33,8 @@ function initializeSocket(server) {
       });
 
       findedUser.socket_id = null;
+
+      findedUser.save();
     });
 
     socket.on("courierLocationUpdate", async (data) => {
