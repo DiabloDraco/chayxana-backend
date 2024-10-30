@@ -57,4 +57,18 @@ const createItem = async ({ name, position, photo }) => {
   }
 };
 
-export { findAll, findOne, deleteItem, updateItem, createItem };
+const rateWorker = async ({ id, rate }) => {
+  try {
+    const item = await WorkersModel.findOne({ where: { id } });
+    if (!item) return new Error("Item not found");
+    item.rate =
+      (item.rate * item.ratesCount + rate) / (item.ratesCount + 1) || item.rate;
+    item.ratesCount = ratesCount + 1 || item.ratesCount;
+    const saved = await item.save();
+    return saved;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { findAll, findOne, deleteItem, updateItem, createItem, rateWorker };

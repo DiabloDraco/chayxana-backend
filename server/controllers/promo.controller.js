@@ -28,7 +28,11 @@ const GETID = async (req, res) => {
 
 const CHECKPROMO = async (req, res) => {
   try {
-    const items = await checkPromo({ promo_code: req.query.check_promo });
+    const user_id = req.user.id;
+    const items = await checkPromo({
+      promo_code: req.query.check_promo,
+      user_id,
+    });
     return res.status(200).send(items);
   } catch (error) {
     return res.status(400).send({ message: error.message });

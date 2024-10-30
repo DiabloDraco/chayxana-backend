@@ -14,6 +14,7 @@ import "./workers.model.js";
 import "./gallery.model.js";
 import "./feedback.model.js";
 import PromoModel from "./promo.model.js";
+import "./notes.model.js";
 
 UserModel.belongsTo(RoleModel, {
   foreignKey: "role_id",

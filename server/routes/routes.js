@@ -14,6 +14,7 @@ import PromoRouter from "./promo.routes.js";
 import TablesRouter from "./tables.routes.js";
 import StoriesRouter from "./stories.routes.js";
 import CourierRouter from "./courier.routes.js";
+import NotesRouter from "./notes.routes.js";
 
 const routes = Router();
 
@@ -31,7 +32,7 @@ routes.use(ProductCategoryRouter);
 routes.use(ProductRouter);
 routes.use(UserRouter);
 routes.use(RequestRouter);
-routes.use(DiscountRouter);
+// routes.use(DiscountRouter);
 routes.use(DashboardRouter);
 routes.use(ListRouter);
 routes.use(GalleryRouter);
@@ -41,5 +42,6 @@ routes.use(PromoRouter);
 routes.use(TablesRouter);
 routes.use(StoriesRouter);
 routes.use(CourierRouter);
+routes.use(NotesRouter);
 
 export default routes;

@@ -1,4 +1,5 @@
 import { Op } from "sequelize";
+import UserPromoModel from "../models/userPromo.model.js";
 import PromoModel from "../models/promo.model.js";
 
 const findAll = async () => {
@@ -23,7 +24,7 @@ const findOne = async (id) => {
   }
 };
 
-const checkPromo = async ({ promo_code }) => {
+const checkPromo = async ({ promo_code, user_id }) => {
   try {
     const item = await PromoModel.findOne({
       where: {
@@ -32,11 +33,19 @@ const checkPromo = async ({ promo_code }) => {
       },
     });
 
-    if (item) {
-      return item;
-    } else {
+    if (!item) {
       throw new Error("Такого промокода не существует!");
     }
+
+    const is_Activated = UserPromoModel.findOne({
+      where: { user_id, promo_id: item.id },
+    });
+
+    if (is_Activated) {
+      throw new Error("Вы уже активировали этот промокод!");
+    }
+
+    return item;
   } catch (error) {
     throw new Error(error.message);
   }

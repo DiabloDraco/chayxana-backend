@@ -5,6 +5,7 @@ import {
   deleteItem,
   updateItem,
   createItem,
+  rateWorker,
 } from "../services/workers.service.js";
 
 const GET = async (req, res) => {
@@ -83,4 +84,19 @@ const DELETE = async (req, res) => {
   }
 };
 
-export { GET, GETID, POST, PUT, DELETE };
+const RATE = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rate } = req.body;
+
+    if (!id || !rate) return new Error("All datas is required");
+
+    const item = await rateWorker({ id, rate });
+
+    res.status(200).send(item);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+export { GET, GETID, POST, PUT, DELETE, RATE };

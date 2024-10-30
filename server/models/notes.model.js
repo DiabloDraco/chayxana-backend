@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../plugins/sequalize.js";
 
-const WorkersModel = sequelize.define(
-  "workers",
+const NotesModel = sequelize.define(
+  "notes",
   {
     id: {
       primaryKey: true,
@@ -22,30 +22,16 @@ const WorkersModel = sequelize.define(
     deleted_at: {
       type: DataTypes.DATE,
     },
-    name: {
+    text: {
       type: DataTypes.STRING,
-    },
-    position: {
-      type: DataTypes.STRING,
-    },
-    photo: {
-      type: DataTypes.STRING,
-    },
-    rating: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    },
-    ratesCount: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
     },
   },
   {
-    freezeTableName: true,
+    underscored: true,
     timestamps: true,
     paranoid: true,
-    underscored: true,
+    freezeTableName: true,
   }
 );
 
-export default WorkersModel;
+export default NotesModel;
