@@ -19,7 +19,7 @@ function initializeSocket(server) {
         },
       });
 
-      findedUser.socketId = socket.id;
+      findedUser.socket_id = socket.id;
       console.log(
         `Пользователь ${userId} зарегистрирован с socket.id ${socket.id}`
       );
@@ -28,11 +28,11 @@ function initializeSocket(server) {
     socket.on("disconnect", async () => {
       const findedUser = await UserModel.findOne({
         where: {
-          socketId: socket.id,
+          socket_id: socket.id,
         },
       });
 
-      findedUser.socketId = null;
+      findedUser.socket_id = null;
     });
 
     socket.on("courierLocationUpdate", async (data) => {
@@ -52,7 +52,7 @@ function initializeSocket(server) {
 
       if (client) {
         if (client.socketId) {
-          socket.to(client.socketId).emit("courierLocationUpdate", data);
+          socket.to(client.socket_id).emit("courierLocationUpdate", data);
         }
       }
     });
