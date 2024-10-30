@@ -51,7 +51,7 @@ function initializeSocket(server) {
       });
 
       if (client) {
-        if (client.socketId) {
+        if (client.socket_id) {
           socket.to(client.socket_id).emit("courierLocationUpdate", data);
         }
       }
