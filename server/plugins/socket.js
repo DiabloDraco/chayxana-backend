@@ -32,9 +32,12 @@ function initializeSocket(server) {
         },
       });
 
-      findedUser.socket_id = null;
-
-      findedUser.save();
+      if (findedUser) {
+        findedUser.socket_id = null;
+        await findedUser.save();
+      } else {
+        console.error("User not found on disconnect");
+      }
     });
 
     socket.on("courierLocationUpdate", async (data) => {
