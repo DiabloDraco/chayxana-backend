@@ -16,7 +16,6 @@ const createOrder = async ({
   name,
   delivery_id,
   target,
-  user,
   delivery_range,
   promo,
   entrance,
@@ -115,7 +114,7 @@ const createOrder = async ({
         name,
         discount_id: findedPromo ? null : findedPromo.id,
         target,
-        user_id: user,
+        user_id: user_id,
         entrance,
         floor,
         room,
@@ -124,14 +123,8 @@ const createOrder = async ({
     );
 
     if (!findedPromo && !user.is_first) {
-      const findedUser = await UserModel.findOne({
-        where: {
-          id: user,
-        },
-      });
-
-      findedUser.cashback += finalPrice * 0.02;
-      await findedUser.save();
+      user.cashback += finalPrice * 0.02;
+      await user.save();
     } else if (findedPromo) {
       if (!findedPromo.is_infinite) {
         findedPromo.count -= 1;
@@ -471,4 +464,5 @@ export {
   updateItem,
   findDiscount,
   findOneUser,
+  createOrder,
 };

@@ -5,6 +5,7 @@ import {
   updateItem,
   findDiscount,
   findOneUser,
+  createOrder,
 } from "../services/request.service.js";
 import { sendMessageToChannel } from "../plugins/telegram.js";
 import { getIO } from "../plugins/socket.js";
@@ -23,7 +24,6 @@ const POST = async (req, res) => {
       target,
       delivery_range,
       promo,
-      payment_type,
       entrance,
       floor,
       room,
@@ -31,7 +31,7 @@ const POST = async (req, res) => {
 
     const user = req.user.id;
 
-    const request = await createRequest(
+    const request = await createOrder({
       orders,
       phone,
       address,
@@ -40,15 +40,13 @@ const POST = async (req, res) => {
       name,
       delivery_id,
       target,
-      user,
+      user_id: user,
       delivery_range,
       promo,
-      payment_type,
       entrance,
       floor,
-      room
-    );
-
+      room,
+    });
     if (request instanceof Error) {
       return res.status(400).json({ message: request.message });
     }
