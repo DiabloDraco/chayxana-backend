@@ -56,7 +56,7 @@ RequestModel.hasMany(OrderModel, {
   as: "items",
 });
 
-RequestModel.belongsTo(DiscountModel, {
+RequestModel.belongsTo(PromoModel, {
   foreignKey: "discount_id",
   as: "discount",
 });

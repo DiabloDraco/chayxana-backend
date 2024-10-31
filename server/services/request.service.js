@@ -97,12 +97,12 @@ const createOrder = async ({
       return acc + price;
     }, 0);
 
-    if (full_price > 1199 && user.is_first) {
+    if (full_price > 1199 && user.is_first && promo == null) {
       full_price -= 300;
+    } else if (!user.is_first && promo) {
+      full_price -= (full_price * findedPromo.discount) / 100;
     }
-    const finalPrice = findedPromo
-      ? (full_price - discountAmount.discounted) * (findedPromo.discount / 100)
-      : full_price - discountAmount.discounted;
+    const finalPrice = full_price;
 
     const request = await RequestModel.create(
       {
@@ -113,7 +113,7 @@ const createOrder = async ({
         branch,
         comment,
         name,
-        discount_id: finded ? null : discountAmount.discount_id,
+        discount_id: findedPromo ? null : findedPromo.id,
         target,
         user_id: user,
         entrance,
@@ -123,7 +123,7 @@ const createOrder = async ({
       { returning: true }
     );
 
-    if (!findedPromo && !finded) {
+    if (!findedPromo && !user.is_first) {
       const findedUser = await UserModel.findOne({
         where: {
           id: user,
@@ -133,8 +133,10 @@ const createOrder = async ({
       findedUser.cashback += finalPrice * 0.02;
       await findedUser.save();
     } else if (findedPromo) {
-      findedPromo.count -= 1;
-      await findedPromo.save();
+      if (!findedPromo.is_infinite) {
+        findedPromo.count -= 1;
+        await findedPromo.save();
+      }
     }
     if (!request) {
       throw new Error("Failed to create request");

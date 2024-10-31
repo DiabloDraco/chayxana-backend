@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../plugins/sequalize.js";
+import PromoModel from "./promo.model.js";
 
 const RequestModel = sequelize.define(
   "requests",
@@ -54,7 +55,7 @@ const RequestModel = sequelize.define(
     discount_id: {
       type: DataTypes.BIGINT,
       references: {
-        model: "discounts",
+        model: PromoModel,
         key: "id",
       },
     },
