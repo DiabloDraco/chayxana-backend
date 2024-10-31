@@ -10,7 +10,7 @@ const findAll = async ({ branch_id }) => {
     });
     return items;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
