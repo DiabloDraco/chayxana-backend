@@ -30,14 +30,14 @@ const GETID = async (req, res) => {
 
 const POST = async (req, res) => {
   try {
-    const { is_account, table_id } = req.body;
+    const { is_account, table_id, branch_id } = req.body;
 
-    if (!table_id) {
+    if (!table_id || !branch_id) {
       throw new Error("All datas is required");
     }
     await getIO().emit("newTable");
 
-    const item = await createItem({ is_account, table_id });
+    const item = await createItem({ is_account, table_id, branch_id });
     res.status(200).send(item);
   } catch (error) {
     res.status(400).send(error);
@@ -46,10 +46,16 @@ const POST = async (req, res) => {
 
 const PUT = async (req, res) => {
   try {
-    const { is_account, table_id, isWatched } = req.body;
+    const { is_account, table_id, isWatched, branch_id } = req.body;
     const { id } = req.params;
 
-    const item = await updateItem({ is_account, table_id, isWatched, id });
+    const item = await updateItem({
+      is_account,
+      table_id,
+      isWatched,
+      branch_id,
+      id,
+    });
 
     res.status(200).send(item);
   } catch (error) {

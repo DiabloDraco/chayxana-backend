@@ -30,13 +30,20 @@ const deleteItem = async ({ id }) => {
   }
 };
 
-const updateItem = async ({ is_account, table_id, isWatched, id }) => {
+const updateItem = async ({
+  is_account,
+  table_id,
+  isWatched,
+  branch_id,
+  id,
+}) => {
   try {
     const item = await TablesModel.findOne({ where: { id } });
     if (!item) return new Error("Item not found");
     item.is_account = is_account || item.is_account;
     item.table_id = table_id || item.table_id;
     item.is_watched = isWatched || item.is_watched;
+    item.branch_id = branch_id || item.branch_id;
     const saved = await item.save();
     return saved;
   } catch (error) {
@@ -44,9 +51,9 @@ const updateItem = async ({ is_account, table_id, isWatched, id }) => {
   }
 };
 
-const createItem = async ({ is_account, table_id }) => {
+const createItem = async ({ is_account, table_id, branch_id }) => {
   try {
-    const item = await TablesModel.create({ is_account, table_id });
+    const item = await TablesModel.create({ is_account, table_id, branch_id });
     return item;
   } catch (error) {
     throw new Error(error);

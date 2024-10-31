@@ -31,6 +31,9 @@ const TablesModel = sequelize.define("tables", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  branch_id: {
+    type: DataTypes.BIGINT,
+  },
 });
 
 export default TablesModel;
