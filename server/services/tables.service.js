@@ -1,9 +1,12 @@
 import TablesModel from "../models/tables.model.js";
 
-const findAll = async () => {
+const findAll = async ({ branch_id }) => {
   try {
     const items = await TablesModel.findAll({
       order: [["created_at", "DESC"]],
+      where: {
+        branch_id,
+      },
     });
     return items;
   } catch (error) {

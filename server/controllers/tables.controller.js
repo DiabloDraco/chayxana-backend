@@ -9,7 +9,8 @@ import { getIO } from "../plugins/socket.js";
 
 const GET = async (req, res) => {
   try {
-    const items = await findAll();
+    const { branch_id } = req.query;
+    const items = await findAll({ branch_id });
 
     res.status(200).send(items);
   } catch (error) {
