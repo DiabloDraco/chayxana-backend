@@ -5,35 +5,7 @@ import { DECIMAL, Op } from "sequelize";
 import DiscountModel from "../models/discount.model.js";
 import PromoModel from "../models/promo.model.js";
 import UserModel from "../models/user.model.js";
-
-const applyDiscount = async (totalAmount) => {
-  try {
-    const bestDiscount = await DiscountModel.findOne({
-      attributes: ["percentage", "id"],
-      where: {
-        price_up: {
-          [Op.lt]: totalAmount,
-        },
-      },
-      order: [["percentage", "DESC"]],
-    });
-    if (bestDiscount) {
-      const discountedAmount = (totalAmount * bestDiscount.percentage) / 100;
-      return {
-        discounted: discountedAmount,
-        discount_id: bestDiscount.id,
-      };
-    }
-
-    return {
-      discounted: 0,
-      discount_id: null,
-    };
-  } catch (error) {
-    console.error("Error applying discount:", error.message);
-    throw new Error("Error applying discount");
-  }
-};
+import UserPromoModel from "../models/userPromo.model.js";
 
 const createOrder = async ({
   orders,
@@ -50,8 +22,15 @@ const createOrder = async ({
   entrance,
   floor,
   room,
+  user_id,
 }) => {
   try {
+    const user = UserModel.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+
     const delivery_price =
       delivery_range == 1
         ? 350
@@ -86,14 +65,87 @@ const createOrder = async ({
       throw new Error("Такого промокода не существует!");
     }
 
-    const finded = await RequestModel.findOne({
-      where: {
-        phone,
-        status: {
-          [Op.ne]: "cancelled",
-        },
-      },
+    const userPromo = UserPromoModel.findOne({
+      where: { user_id: user.id, promo_id: findedPromo.id },
     });
+
+    if (userPromo) {
+      throw new Error("Вы уже активировали этот промокод!");
+    }
+
+    const getProductPrice = async (productId, quantity) => {
+      const product = await ProductModel.findOne({
+        attributes: ["price"],
+        where: { id: productId },
+      });
+
+      if (!product) {
+        throw new Error(`Product with id ${productId} not found`);
+      }
+
+      return product.dataValues.price * quantity;
+    };
+
+    const orderPrices = await Promise.all(
+      orders.map((order) => getProductPrice(order.product_id, order.quantity))
+    );
+
+    const full_price = orderPrices.reduce((acc, price) => {
+      if (typeof price !== "number") {
+        throw new Error(`Invalid price value: ${price}`);
+      }
+      return acc + price;
+    }, 0);
+
+    if (full_price > 1199 && user.is_first) {
+      full_price -= 300;
+    }
+    const finalPrice = findedPromo
+      ? (full_price - discountAmount.discounted) * (findedPromo.discount / 100)
+      : full_price - discountAmount.discounted;
+
+    const request = await RequestModel.create(
+      {
+        full_price: delivery_id == 1 ? finalPrice + delivery_price : finalPrice,
+        phone,
+        address,
+        delivery_id,
+        branch,
+        comment,
+        name,
+        discount_id: finded ? null : discountAmount.discount_id,
+        target,
+        user_id: user,
+        entrance,
+        floor,
+        room,
+      },
+      { returning: true }
+    );
+
+    if (!findedPromo && !finded) {
+      const findedUser = await UserModel.findOne({
+        where: {
+          id: user,
+        },
+      });
+
+      findedUser.cashback += finalPrice * 0.02;
+      await findedUser.save();
+    } else if (findedPromo) {
+      findedPromo.count -= 1;
+      await findedPromo.save();
+    }
+    if (!request) {
+      throw new Error("Failed to create request");
+    }
+
+    for (let order of orders) {
+      order.request_id = request.id;
+      await OrderModel.create(order);
+    }
+
+    return request;
   } catch (error) {
     throw new Error(error.message);
   }
