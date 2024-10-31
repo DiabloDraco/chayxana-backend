@@ -27,7 +27,7 @@ const findAllTables = async () => {
   try {
     const items = await ListsModel.findAll({
       where: { type_id: 2 },
-      attributes: [["val01", "table_id"], "created_at"],
+      attributes: [["val01", "table_id"], ["val02", "branch_id"], "created_at"],
       order: [["id", "ASC"]],
     });
 
@@ -37,11 +37,12 @@ const findAllTables = async () => {
   }
 };
 
-const createTableItem = async ({ table_id }) => {
+const createTableItem = async ({ table_id, branch_id }) => {
   try {
     const item = await ListsModel.create({
       type_id: 2,
       val01: table_id,
+      val02: branch_id,
       id: table_id,
     });
     return item;

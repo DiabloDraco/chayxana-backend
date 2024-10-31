@@ -28,7 +28,7 @@ const POSTTABLE = async (req, res) => {
   try {
     const { table_id } = req.body;
 
-    const item = await createTableItem({ table_id });
+    const item = await createTableItem({ table_id, branch_id });
     res.status(200).send(item);
   } catch (error) {
     res.status(400).send({ message: error.message });
