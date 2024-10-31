@@ -26,7 +26,7 @@ const GETTABLES = async (req, res) => {
 
 const POSTTABLE = async (req, res) => {
   try {
-    const { table_id } = req.body;
+    const { table_id, branch_id } = req.body;
 
     const item = await createTableItem({ table_id, branch_id });
     res.status(200).send(item);
