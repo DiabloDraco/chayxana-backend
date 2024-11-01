@@ -98,6 +98,8 @@ const createOrder = async ({
 
     if (full_price > 1199 && user.is_first && promo == null) {
       full_price -= 300;
+      user.is_first = false;
+      await user.save();
     } else if (!user.is_first && promo) {
       full_price -= (full_price * findedPromo.discount) / 100;
     }
@@ -252,16 +254,7 @@ const createRequest = async (
       { returning: true }
     );
 
-    if (!findedPromo && !finded) {
-      const findedUser = await UserModel.findOne({
-        where: {
-          id: user,
-        },
-      });
-
-      findedUser.cashback += finalPrice * 0.02;
-      await findedUser.save();
-    } else if (findedPromo) {
+    if (findedPromo) {
       findedPromo.count -= 1;
       await findedPromo.save();
     }
@@ -283,6 +276,54 @@ const createRequest = async (
 
 const findDiscount = async (orders, phone) => {
   try {
+    const user = UserModel.findOne({
+      where: {
+        id: user_id,
+      },
+    });
+
+    const delivery_price =
+      delivery_range == 1
+        ? 350
+        : delivery_range == 2
+        ? 450
+        : delivery_range == 3
+        ? 550
+        : 0;
+
+    const findedPromo = await PromoModel.findOne({
+      where: {
+        promo_code: promo,
+        [Op.or]: [
+          {
+            count: {
+              [Op.gt]: 0,
+            },
+          },
+          {
+            is_infinite: {
+              [Op.eq]: true,
+            },
+          },
+        ],
+        expired_at: {
+          [Op.gte]: new Date(),
+        },
+      },
+    });
+
+    if (promo && !findedPromo) {
+      throw new Error("Такого промокода не существует!");
+    }
+
+    const userPromo = UserPromoModel.findOne({
+      where: { user_id: user.id, promo_id: findedPromo.id },
+    });
+
+    if (userPromo) {
+      throw new Error("Вы уже активировали этот промокод!");
+    }
+
     const getProductPrice = async (productId, quantity) => {
       const product = await ProductModel.findOne({
         attributes: ["price"],
@@ -296,15 +337,6 @@ const findDiscount = async (orders, phone) => {
       return product.dataValues.price * quantity;
     };
 
-    const finded = await RequestModel.findOne({
-      where: {
-        phone,
-        status: {
-          [Op.ne]: "cancelled",
-        },
-      },
-    });
-
     const orderPrices = await Promise.all(
       orders.map((order) => getProductPrice(order.product_id, order.quantity))
     );
@@ -316,31 +348,16 @@ const findDiscount = async (orders, phone) => {
       return acc + price;
     }, 0);
 
-    const discountAmount = await applyDiscount(full_price);
-
-    const finalPrice = full_price - discountAmount.discounted;
-
-    if (finded) {
-      return {
-        message: "Не первый заказ",
-        status: "already",
-        price: full_price,
-      };
-    }
-
-    if (finalPrice == full_price) {
-      return {
-        message: "Не достаточно для скидки",
-        status: "not_enough",
-        price: full_price,
-      };
+    if (full_price > 1199 && user.is_first && promo == null) {
+      full_price -= 300;
+    } else if (!user.is_first && promo) {
+      full_price -= (full_price * findedPromo.discount) / 100;
     }
 
     return {
-      message: "Скидка",
-      status: "success",
-      price: finalPrice,
-      percentage: (discountAmount.discounted / full_price) * 100,
+      price: full_price,
+      discount_id: findedPromo ? null : findedPromo.id,
+      is_first: user.is_first,
     };
   } catch (error) {
     throw new Error(error.message);
@@ -445,11 +462,20 @@ const findOneUser = async ({ user_id }) => {
 const updateItem = async (id, status) => {
   try {
     const order = await RequestModel.findOne({ where: { id } });
-
+    const user = UserModel.findOne({ where: { id: order.user_id } });
+    order.discount_id;
     if (!order) return new Error("Item not found");
-
+    if (!order.discount_id) {
+      if (order.delivery_id == 1) {
+        user.cashback += (order.full_price - 550) * 0.02;
+        await user.save();
+      } else {
+        user.cashback += order.full_price * 0.02;
+        await user.save();
+      }
+    }
     order.status = status || order.status;
-    const saved = await order.save();
+    await order.save();
 
     return order;
   } catch (error) {
