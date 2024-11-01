@@ -276,7 +276,7 @@ const createRequest = async (
 
 const findDiscount = async (orders, phone) => {
   try {
-    const user = UserModel.findOne({
+    const user = await UserModel.findOne({
       where: {
         id: user_id,
       },
@@ -316,7 +316,7 @@ const findDiscount = async (orders, phone) => {
       throw new Error("Такого промокода не существует!");
     }
 
-    const userPromo = UserPromoModel.findOne({
+    const userPromo = await UserPromoModel.findOne({
       where: { user_id: user.id, promo_id: findedPromo.id },
     });
 
