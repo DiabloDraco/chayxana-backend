@@ -363,9 +363,9 @@ const findAll = async () => {
           ],
         },
         {
-          model: DiscountModel,
+          model: PromoModel,
           as: "discount",
-          attributes: ["percentage"],
+          attributes: [["discount", "percentage"]],
         },
       ],
       order: [["created_at", "DESC"]],
@@ -393,9 +393,9 @@ const findOne = async (id) => {
           ],
         },
         {
-          model: DiscountModel,
+          model: PromoModel,
           as: "discount",
-          attributes: ["percentage"],
+          attributes: [["discount", "percentage"]],
         },
       ],
       where: {
@@ -425,9 +425,9 @@ const findOneUser = async ({ user_id }) => {
           ],
         },
         {
-          model: DiscountModel,
+          model: PromoModel,
           as: "discount",
-          attributes: ["percentage"],
+          attributes: [["discount", "percentage"]],
         },
       ],
       where: {
