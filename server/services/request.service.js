@@ -39,110 +39,179 @@ const createOrder = async ({
         ? 550
         : 0;
 
-    const findedPromo = await PromoModel.findOne({
-      where: {
-        promo_code: promo,
-        [Op.or]: [
-          {
-            count: {
-              [Op.gt]: 0,
+    if (promo) {
+      const findedPromo = await PromoModel.findOne({
+        where: {
+          promo_code: promo,
+          [Op.or]: [
+            {
+              count: {
+                [Op.gt]: 0,
+              },
             },
-          },
-          {
-            is_infinite: {
-              [Op.eq]: true,
+            {
+              is_infinite: {
+                [Op.eq]: true,
+              },
             },
+          ],
+          expired_at: {
+            [Op.gte]: new Date(),
           },
-        ],
-        expired_at: {
-          [Op.gte]: new Date(),
         },
-      },
-    });
-
-    if (promo && !findedPromo) {
-      throw new Error("Такого промокода не существует!");
-    }
-
-    const userPromo = await UserPromoModel.findOne({
-      where: { user_id: user.id, promo_id: findedPromo.id },
-    });
-
-    if (userPromo) {
-      throw new Error("Вы уже активировали этот промокод!");
-    }
-
-    const getProductPrice = async (productId, quantity) => {
-      const product = await ProductModel.findOne({
-        attributes: ["price"],
-        where: { id: productId },
       });
 
-      if (!product) {
-        throw new Error(`Product with id ${productId} not found`);
+      if (promo && !findedPromo) {
+        throw new Error("Такого промокода не существует!");
       }
 
-      return product.dataValues.price * quantity;
-    };
+      const userPromo = await UserPromoModel.findOne({
+        where: { user_id: user.id, promo_id: findedPromo.id },
+      });
 
-    const orderPrices = await Promise.all(
-      orders.map((order) => getProductPrice(order.product_id, order.quantity))
-    );
-
-    const full_price = orderPrices.reduce((acc, price) => {
-      if (typeof price !== "number") {
-        throw new Error(`Invalid price value: ${price}`);
+      if (userPromo) {
+        throw new Error("Вы уже активировали этот промокод!");
       }
-      return acc + price;
-    }, 0);
 
-    if (full_price > 1199 && user.is_first && promo == null) {
-      full_price -= 300;
-      user.is_first = false;
-      await user.save();
-    } else if (!user.is_first && promo) {
-      full_price -= (full_price * findedPromo.discount) / 100;
-    }
-    const finalPrice = full_price;
+      const getProductPrice = async (productId, quantity) => {
+        const product = await ProductModel.findOne({
+          attributes: ["price"],
+          where: { id: productId },
+        });
 
-    const request = await RequestModel.create(
-      {
-        full_price: delivery_id == 1 ? finalPrice + delivery_price : finalPrice,
-        phone,
-        address,
-        delivery_id,
-        branch,
-        comment,
-        name,
-        discount_id: findedPromo ? findedPromo.id : null,
-        target,
-        user_id: user_id,
-        entrance,
-        floor,
-        room,
-      },
-      { returning: true }
-    );
+        if (!product) {
+          throw new Error(`Product with id ${productId} not found`);
+        }
 
-    if (!findedPromo && !user.is_first) {
-      user.cashback += finalPrice * 0.02;
-      await user.save();
-    } else if (findedPromo) {
-      if (!findedPromo.is_infinite) {
-        findedPromo.count -= 1;
-        await findedPromo.save();
+        return product.dataValues.price * quantity;
+      };
+
+      const orderPrices = await Promise.all(
+        orders.map((order) => getProductPrice(order.product_id, order.quantity))
+      );
+
+      const full_price = orderPrices.reduce((acc, price) => {
+        if (typeof price !== "number") {
+          throw new Error(`Invalid price value: ${price}`);
+        }
+        return acc + price;
+      }, 0);
+
+      if (full_price > 1199 && user.is_first && promo == null) {
+        full_price -= 300;
+        user.is_first = false;
+        await user.save();
+      } else if (!user.is_first && promo) {
+        full_price -= (full_price * findedPromo.discount) / 100;
       }
-    }
-    if (!request) {
-      throw new Error("Failed to create request");
-    }
+      const finalPrice = full_price;
 
-    for (let order of orders) {
-      order.request_id = request.id;
-      await OrderModel.create(order);
-    }
+      const request = await RequestModel.create(
+        {
+          full_price:
+            delivery_id == 1 ? finalPrice + delivery_price : finalPrice,
+          phone,
+          address,
+          delivery_id,
+          branch,
+          comment,
+          name,
+          discount_id: findedPromo ? findedPromo.id : null,
+          target,
+          user_id: user_id,
+          entrance,
+          floor,
+          room,
+        },
+        { returning: true }
+      );
 
-    return request;
+      if (!findedPromo && !user.is_first) {
+        user.cashback += finalPrice * 0.02;
+        await user.save();
+      } else if (findedPromo) {
+        if (!findedPromo.is_infinite) {
+          findedPromo.count -= 1;
+          await findedPromo.save();
+        }
+      }
+      if (!request) {
+        throw new Error("Failed to create request");
+      }
+
+      for (let order of orders) {
+        order.request_id = request.id;
+        await OrderModel.create(order);
+      }
+
+      return request;
+    } else {
+      const getProductPrice = async (productId, quantity) => {
+        const product = await ProductModel.findOne({
+          attributes: ["price"],
+          where: { id: productId },
+        });
+
+        if (!product) {
+          throw new Error(`Product with id ${productId} not found`);
+        }
+
+        return product.dataValues.price * quantity;
+      };
+
+      const orderPrices = await Promise.all(
+        orders.map((order) => getProductPrice(order.product_id, order.quantity))
+      );
+
+      const full_price = orderPrices.reduce((acc, price) => {
+        if (typeof price !== "number") {
+          throw new Error(`Invalid price value: ${price}`);
+        }
+        return acc + price;
+      }, 0);
+
+      if (full_price > 1199 && user.is_first && promo == null) {
+        full_price -= 300;
+        user.is_first = false;
+        await user.save();
+      }
+      const finalPrice = full_price;
+
+      const request = await RequestModel.create(
+        {
+          full_price:
+            delivery_id == 1 ? finalPrice + delivery_price : finalPrice,
+          phone,
+          address,
+          delivery_id,
+          branch,
+          comment,
+          name,
+          discount_id: null,
+          target,
+          user_id: user_id,
+          entrance,
+          floor,
+          room,
+        },
+        { returning: true }
+      );
+
+      if (!user.is_first) {
+        user.cashback += finalPrice * 0.02;
+        await user.save();
+      }
+      if (!request) {
+        throw new Error("Failed to create request");
+      }
+
+      for (let order of orders) {
+        order.request_id = request.id;
+        await OrderModel.create(order);
+      }
+
+      return request;
+    }
   } catch (error) {
     throw new Error(error.message);
   }
