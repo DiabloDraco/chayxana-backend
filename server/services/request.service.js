@@ -105,6 +105,8 @@ const createOrder = async ({
         full_price -= (full_price * findedPromo.discount) / 100;
       }
       const finalPrice = full_price;
+      console.log("findedPromo:", findedPromo); // Убедитесь, что findedPromo это объект или null
+      console.log("findedPromo.id:", findedPromo ? findedPromo.id : null);
 
       const request = await RequestModel.create(
         {
