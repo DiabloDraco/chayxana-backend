@@ -90,7 +90,7 @@ const createOrder = async ({
         orders.map((order) => getProductPrice(order.product_id, order.quantity))
       );
 
-      const full_price = orderPrices.reduce((acc, price) => {
+      let full_price = orderPrices.reduce((acc, price) => {
         if (typeof price !== "number") {
           throw new Error(`Invalid price value: ${price}`);
         }
@@ -163,7 +163,7 @@ const createOrder = async ({
         orders.map((order) => getProductPrice(order.product_id, order.quantity))
       );
 
-      const full_price = orderPrices.reduce((acc, price) => {
+      let full_price = orderPrices.reduce((acc, price) => {
         if (typeof price !== "number") {
           throw new Error(`Invalid price value: ${price}`);
         }
@@ -291,7 +291,7 @@ const createRequest = async (
       orders.map((order) => getProductPrice(order.product_id, order.quantity))
     );
 
-    const full_price = orderPrices.reduce((acc, price) => {
+    let full_price = orderPrices.reduce((acc, price) => {
       if (typeof price !== "number") {
         throw new Error(`Invalid price value: ${price}`);
       }
@@ -410,7 +410,7 @@ const findDiscount = async (orders, phone) => {
       orders.map((order) => getProductPrice(order.product_id, order.quantity))
     );
 
-    const full_price = orderPrices.reduce((acc, price) => {
+    let full_price = orderPrices.reduce((acc, price) => {
       if (typeof price !== "number") {
         throw new Error(`Invalid price value: ${price}`);
       }
