@@ -95,7 +95,7 @@ const CHECK = async (req, res) => {
 
     const discount = await findDiscount({ promo_code, user_id });
 
-    return res.status(200).send(discount);
+    return res.status(200).send({ discount });
   } catch (error) {
     return res.status(400).send({ message: error.message });
   }
