@@ -20,7 +20,7 @@ router.get("/request/user", auth, GETUSER);
 
 router.get("/request/:id", GETID);
 
-router.post("/request/discount", CHECK);
+router.get("/request/discount", CHECK);
 
 router.patch("/request/:id", auth, UPDATE);
 
