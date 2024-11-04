@@ -89,9 +89,11 @@ const GETID = async (req, res) => {
 
 const CHECK = async (req, res) => {
   try {
-    const { orders, phone } = req.body;
+    const { promo_code } = req.body;
 
-    const discount = await findDiscount(orders, phone);
+    const user_id = req.user.id;
+
+    const discount = await findDiscount({ promo_code, user_id });
 
     return res.status(200).send(discount);
   } catch (error) {

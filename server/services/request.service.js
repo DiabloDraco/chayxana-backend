@@ -350,26 +350,11 @@ const createRequest = async (
   }
 };
 
-const findDiscount = async (orders, phone) => {
+const findDiscount = async ({ promo_code, user_id }) => {
   try {
-    const user = await UserModel.findOne({
-      where: {
-        id: user_id,
-      },
-    });
-
-    const delivery_price =
-      delivery_range == 1
-        ? 350
-        : delivery_range == 2
-        ? 450
-        : delivery_range == 3
-        ? 550
-        : 0;
-
     const findedPromo = await PromoModel.findOne({
       where: {
-        promo_code: promo,
+        promo_code: promo_code,
         [Op.or]: [
           {
             count: {
@@ -392,49 +377,15 @@ const findDiscount = async (orders, phone) => {
       throw new Error("Такого промокода не существует!");
     }
 
-    const userPromo = await UserPromoModel.findOne({
-      where: { user_id: user.id, promo_id: findedPromo.id },
+    const findedUserPromo = await UserPromoModel.findOne({
+      where: { user_id: user_id, promo_id: findedPromo.id },
     });
 
-    if (userPromo) {
+    if (findedUserPromo) {
       throw new Error("Вы уже активировали этот промокод!");
     }
 
-    const getProductPrice = async (productId, quantity) => {
-      const product = await ProductModel.findOne({
-        attributes: ["price"],
-        where: { id: productId },
-      });
-
-      if (!product) {
-        throw new Error(`Product with id ${productId} not found`);
-      }
-
-      return product.dataValues.price * quantity;
-    };
-
-    const orderPrices = await Promise.all(
-      orders.map((order) => getProductPrice(order.product_id, order.quantity))
-    );
-
-    let full_price = orderPrices.reduce((acc, price) => {
-      if (typeof price !== "number") {
-        throw new Error(`Invalid price value: ${price}`);
-      }
-      return acc + price;
-    }, 0);
-
-    if (full_price > 1199 && user.is_first && promo == null) {
-      full_price -= 300;
-    } else if (!user.is_first && promo) {
-      full_price -= (full_price * findedPromo.discount) / 100;
-    }
-
-    return {
-      price: full_price,
-      discount_id: findedPromo ? null : findedPromo.id,
-      is_first: user.is_first,
-    };
+    return findedPromo;
   } catch (error) {
     throw new Error(error.message);
   }
