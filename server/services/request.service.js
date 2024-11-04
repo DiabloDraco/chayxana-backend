@@ -373,7 +373,7 @@ const findDiscount = async ({ promo_code, user_id }) => {
       },
     });
 
-    if (promo && !findedPromo) {
+    if (promo_code && !findedPromo) {
       throw new Error("Такого промокода не существует!");
     }
 
