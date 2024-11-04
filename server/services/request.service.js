@@ -377,8 +377,6 @@ const findDiscount = async ({ promo_code, user_id }) => {
       throw new Error("Такого промокода не существует!");
     }
 
-    console.log(findedPromo, "findedPromo");
-
     const findedUserPromo = await UserPromoModel.findOne({
       where: { user_id: user_id, promo_id: findedPromo.id },
     });
@@ -389,8 +387,6 @@ const findDiscount = async ({ promo_code, user_id }) => {
 
     return findedPromo;
   } catch (error) {
-    console.log(error);
-
     throw new Error(error.message);
   }
 };
