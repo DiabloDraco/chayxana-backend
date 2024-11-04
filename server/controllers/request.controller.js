@@ -89,7 +89,7 @@ const GETID = async (req, res) => {
 
 const CHECK = async (req, res) => {
   try {
-    const { promo_code } = req.body;
+    const { promo_code } = req.query;
 
     const user_id = req.user.id;
 
