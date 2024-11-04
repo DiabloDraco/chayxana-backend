@@ -133,10 +133,6 @@ const createOrder = async ({
         await user.save();
       } else if (findedPromo) {
         if (!findedPromo.is_infinite) {
-          await UserPromoModel.create({
-            user_id: user.id,
-            promo_id: findedPromo.id,
-          });
           findedPromo.count -= 1;
           await findedPromo.save();
         }
@@ -144,6 +140,11 @@ const createOrder = async ({
       if (!request) {
         throw new Error("Failed to create request");
       }
+
+      await UserPromoModel.create({
+        user_id: user.id,
+        promo_id: findedPromo.id,
+      });
 
       for (let order of orders) {
         order.request_id = request.id;
