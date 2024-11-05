@@ -71,8 +71,7 @@ const POST = async (req, res) => {
       !filename ||
       !description ||
       !on_shop ||
-      !is_reccomend ||
-      !is_set
+      !is_reccomend
     )
       throw new Error("All datas is required");
     const item = await insertItem({
