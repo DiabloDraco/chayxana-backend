@@ -464,7 +464,7 @@ const findOneUser = async ({ user_id }) => {
             {
               model: ProductModel,
               as: "product",
-              attributes: ["price", "name", "photo"],
+              attributes: ["price", "name", "photo", "description"],
             },
           ],
         },
