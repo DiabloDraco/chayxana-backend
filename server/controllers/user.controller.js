@@ -69,7 +69,7 @@ const UPADTEPHOTO = async (req, res) => {
       const oldItem = await findOne(id);
       if (!oldItem) return new Error("Wrong id");
 
-      await deletePhoto(oldItem.avatar);
+      if (oldItem.photo) await deletePhoto(oldItem.photo);
 
       const newItem = await updatePhoto({
         filename,
@@ -106,7 +106,7 @@ const UPADTEPHOTO = async (req, res) => {
       res.status(200).send("ßуспешно обновлен.");
     }
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 };
 

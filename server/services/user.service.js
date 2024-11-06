@@ -92,7 +92,7 @@ const updatePhoto = async ({
     item.room = room || item.room;
     item.comment = comment || item.comment;
     item.mail = mail || item.mail;
-    item.avatar = filename || item.avatar;
+    item.photo = filename || item.photo;
 
     const saved = await item.save();
     return saved;
@@ -114,7 +114,7 @@ const changePassword = async ({ password, new_password, user_id }) => {
     const saved = await item.save();
     return saved;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
