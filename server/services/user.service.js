@@ -13,6 +13,21 @@ const findAll = async () => {
   }
 };
 
+const findAllCouriers = async () => {
+  try {
+    const items = await UserModel.findAll({
+      order: [["created_at", "DESC"]],
+      where: {
+        role_id: 5,
+      },
+    });
+
+    return items;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 const findOne = async (id) => {
   try {
     const item = await UserModel.findOne({ where: { id } });
@@ -125,4 +140,5 @@ export {
   updatePhoto,
   insertItem,
   changePassword,
+  findAllCouriers,
 };

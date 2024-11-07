@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   DELETE,
   GET,
+  GETCOURIERS,
   GETID,
   POST,
   UPADTEPHOTO,
@@ -49,6 +50,8 @@ const router = Router();
  *                     description: The user's email
  */
 router.get("/user", auth, GET);
+
+router.get("/user", auth, GETCOURIERS);
 
 /**
  * @swagger

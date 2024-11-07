@@ -2,6 +2,7 @@ import {
   changePassword,
   deleteItem,
   findAll,
+  findAllCouriers,
   findOne,
   insertItem,
   updatePhoto,
@@ -11,6 +12,16 @@ import deletePhoto from "../plugins/file.js";
 const GET = async (req, res) => {
   try {
     const items = await findAll();
+
+    res.status(200).send(items);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+const GETCOURIERS = async (req, res) => {
+  try {
+    const items = await findAllCouriers();
 
     res.status(200).send(items);
   } catch (error) {
@@ -145,4 +156,4 @@ const UPDATEPASSWORD = async (req, res) => {
   }
 };
 
-export { GET, GETID, DELETE, UPADTEPHOTO, POST, UPDATEPASSWORD };
+export { GET, GETID, DELETE, UPADTEPHOTO, POST, UPDATEPASSWORD, GETCOURIERS };
