@@ -51,7 +51,7 @@ const router = Router();
  */
 router.get("/user", auth, GET);
 
-router.get("/user", auth, GETCOURIERS);
+router.get("/couriers", auth, GETCOURIERS);
 
 /**
  * @swagger
