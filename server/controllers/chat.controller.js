@@ -9,7 +9,7 @@ import {
 const sendMessages = async (req, res) => {
   try {
     const { dialog_id, message, is_user } = req.body;
-    const file_id = req.file ? req.file.filename : null;
+    const file_id = req.file.filename;
 
     const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
     res.status(200).json(newMessage);
