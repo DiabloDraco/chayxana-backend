@@ -3,6 +3,7 @@ import {
   findAllMessages,
   sendMessages,
   deleteDialogs,
+  createDialog,
 } from "../controllers/chat.controller.js";
 import { Router } from "express";
 import auth from "../middlewares/auth.global.js";
@@ -18,5 +19,7 @@ router.get("/chat/messages/:id", auth, findAllMessages);
 router.post("/chat/messages", auth, multer.single("photo"), sendMessages);
 
 router.delete("/chat/dialogs/:id", auth, deleteDialogs);
+
+router.post("/chat/dialog", auth, createDialog);
 
 export default router;

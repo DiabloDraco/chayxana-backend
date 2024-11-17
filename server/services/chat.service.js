@@ -62,4 +62,16 @@ const deleteDialog = async (dialog_id) => {
   }
 };
 
-export { sendMessage, findAll, findDialogs, deleteDialog };
+const createDialogs = async (user) => {
+  try {
+    const dialogs = await DialogModel.create({
+      user_id: user,
+    });
+
+    return dialogs;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { sendMessage, findAll, findDialogs, deleteDialog, createDialogs };

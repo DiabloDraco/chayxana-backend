@@ -3,6 +3,7 @@ import {
   findAll,
   findDialogs,
   deleteDialog,
+  createDialogs,
 } from "../services/chat.service.js";
 
 const sendMessages = async (req, res) => {
@@ -48,4 +49,20 @@ const deleteDialogs = async (req, res) => {
   }
 };
 
-export { sendMessages, findAllMessages, findAllDialogs, deleteDialogs };
+const createDialog = async (req, res) => {
+  try {
+    const user = req.user.id;
+    const items = await createDialogs(user);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export {
+  sendMessages,
+  findAllMessages,
+  findAllDialogs,
+  deleteDialogs,
+  createDialog,
+};
