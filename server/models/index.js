@@ -5,6 +5,8 @@ import ProductCategoryModel from "./productCategory.model.js";
 import RoleModel from "./role.model.js";
 import RequestModel from "./request.model.js";
 import OrderModel from "./order.model.js";
+import DialogModel from "./dialog.model.js";
+import MessageModel from "./message.model.js";
 import DiscountModel from "./discount.model.js";
 import UserPromoModel from "./userPromo.model.js";
 import "./stories.model.js";
@@ -79,6 +81,21 @@ RequestModel.belongsTo(UserModel, {
 UserModel.hasMany(RequestModel, {
   foreignKey: "delivery_by",
   as: "requests",
+});
+
+DialogModel.belongsTo(UserModel, {
+  foreignKey: "user_id",
+  as: "user",
+});
+
+MessageModel.belongsTo(DialogModel, {
+  foreignKey: "dialog_id",
+  as: "dialog",
+});
+
+DialogModel.hasMany(MessageModel, {
+  foreignKey: "dialog_id",
+  as: "messages",
 });
 
 sequelize.sync();

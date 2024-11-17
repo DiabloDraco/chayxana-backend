@@ -15,6 +15,7 @@ import TablesRouter from "./tables.routes.js";
 import StoriesRouter from "./stories.routes.js";
 import CourierRouter from "./courier.routes.js";
 import NotesRouter from "./notes.routes.js";
+import ChatRouter from "./chat.routes.js";
 
 const routes = Router();
 
@@ -43,5 +44,6 @@ routes.use(TablesRouter);
 routes.use(StoriesRouter);
 routes.use(CourierRouter);
 routes.use(NotesRouter);
+routes.use(ChatRouter);
 
 export default routes;
