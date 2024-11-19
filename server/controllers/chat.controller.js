@@ -5,11 +5,14 @@ import {
   deleteDialog,
   createDialogs,
 } from "../services/chat.service.js";
+import { getIO } from "../plugins/socket.js";
 
 const sendMessages = async (req, res) => {
   try {
     const { dialog_id, message, is_user } = req.body;
     const file_id = req.file.filename;
+
+    await getIO().emit("newMessage");
 
     const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
     res.status(200).json(newMessage);
@@ -53,6 +56,9 @@ const createDialog = async (req, res) => {
   try {
     const user = req.user.id;
     const items = await createDialogs(user);
+
+    await getIO().emit("newDialog");
+
     res.status(200).json(items);
   } catch (error) {
     res.status(400).json({ message: error.message });
