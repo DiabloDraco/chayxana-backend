@@ -4,6 +4,7 @@ import {
   findDialogs,
   deleteDialog,
   createDialogs,
+  findDialogItem,
 } from "../services/chat.service.js";
 import { getIO } from "../plugins/socket.js";
 
@@ -42,6 +43,17 @@ const findAllDialogs = async (req, res) => {
   }
 };
 
+const findDialog = async (req, res) => {
+  try {
+    const user = req.user.id;
+
+    const items = await findDialogItem(user);
+    res.status(200).json(items);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const deleteDialogs = async (req, res) => {
   try {
     const { id } = req.params;
@@ -71,4 +83,5 @@ export {
   findAllDialogs,
   deleteDialogs,
   createDialog,
+  findDialog,
 };

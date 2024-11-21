@@ -1,5 +1,6 @@
 import MessageModel from "../models/message.model.js";
 import DialogModel from "../models/dialog.model.js";
+import UserModel from "../models/user.model.js";
 
 const sendMessage = async (dialog_id, message, file_id, is_user) => {
   try {
@@ -41,7 +42,28 @@ const findDialogs = async (user_id) => {
       where: {
         user_id,
       },
+      include: [
+        {
+          model: UserModel,
+          as: "user",
+          attributes: ["name", "phone", "photo"],
+        },
+      ],
     });
+    return dialogs;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const findDialogItem = async (user_id) => {
+  try {
+    const dialogs = await DialogModel.findOne({
+      where: {
+        user_id,
+      },
+    });
+
     return dialogs;
   } catch (error) {
     throw new Error(error.message);
@@ -74,4 +96,11 @@ const createDialogs = async (user) => {
   }
 };
 
-export { sendMessage, findAll, findDialogs, deleteDialog, createDialogs };
+export {
+  sendMessage,
+  findAll,
+  findDialogs,
+  deleteDialog,
+  createDialogs,
+  findDialogItem,
+};
