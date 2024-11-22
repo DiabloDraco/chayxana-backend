@@ -13,7 +13,7 @@ const sendMessage = async (dialog_id, message, file_id, is_user) => {
     const newMessage = await MessageModel.create({
       text: message,
       dialog_id,
-      file: file_id,
+      file: file_id || null,
       is_user,
     });
 

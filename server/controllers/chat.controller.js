@@ -11,7 +11,7 @@ import { getIO } from "../plugins/socket.js";
 const sendMessages = async (req, res) => {
   try {
     const { dialog_id, message, is_user } = req.body;
-    const file_id = req.file.filename;
+    const file_id = req.file?.filename || null;
 
     await getIO().emit("newMessage");
 
