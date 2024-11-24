@@ -12,8 +12,12 @@ const sendMessages = async (req, res) => {
   try {
     const { dialog_id, message, is_user } = req.body;
     const file_id = req.file?.filename || null;
+    const user = req.user.id;
 
-    await getIO().emit("newMessage");
+    await getIO().emit("newMessage", {
+      dialog_id,
+      user,
+    });
 
     const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
     res.status(200).json(newMessage);
