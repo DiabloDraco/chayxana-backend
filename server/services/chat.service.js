@@ -68,6 +68,7 @@ const findDialogs = async () => {
           },
         },
       ],
+      group: ["id"],
     });
     return dialogs;
   } catch (error) {
