@@ -36,12 +36,9 @@ const findAll = async (dialog_id) => {
   }
 };
 
-const findDialogs = async (user_id) => {
+const findDialogs = async () => {
   try {
     const dialogs = await DialogModel.findAll({
-      where: {
-        user_id,
-      },
       include: [
         {
           model: UserModel,

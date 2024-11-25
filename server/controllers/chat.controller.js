@@ -38,9 +38,7 @@ const findAllMessages = async (req, res) => {
 
 const findAllDialogs = async (req, res) => {
   try {
-    const user = req.user.id;
-
-    const items = await findDialogs(user);
+    const items = await findDialogs();
     res.status(200).json(items);
   } catch (error) {
     res.status(400).json({ message: error.message });
