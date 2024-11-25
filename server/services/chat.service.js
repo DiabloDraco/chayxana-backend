@@ -1,6 +1,7 @@
 import MessageModel from "../models/message.model.js";
 import DialogModel from "../models/dialog.model.js";
 import UserModel from "../models/user.model.js";
+import { Op } from "sequelize";
 
 const sendMessage = async (dialog_id, message, file_id, is_user) => {
   try {
@@ -30,6 +31,18 @@ const findAll = async (dialog_id) => {
         dialog_id,
       },
     });
+
+    await MessageModel.update(
+      {
+        is_read: true,
+      },
+      {
+        where: {
+          dialog_id,
+        },
+      }
+    );
+
     return messages;
   } catch (error) {
     throw new Error(error.message);
@@ -45,6 +58,14 @@ const findDialogs = async () => {
           as: "user",
           attributes: ["name", "phone", "photo"],
         },
+        {
+          model: MessageModel,
+          as: "messages",
+          attributes: [[sequelize.fn("COUNT", "*"), "unreads"]],
+          where: {
+            is_read: false,
+          },
+        },
       ],
     });
     return dialogs;
@@ -59,6 +80,16 @@ const findDialogItem = async (user_id) => {
       where: {
         user_id,
       },
+      include: [
+        {
+          model: MessageModel,
+          as: "messages",
+          attributes: [[sequelize.fn("COUNT", "*"), "unreads"]],
+          where: {
+            is_read: false,
+          },
+        },
+      ],
     });
 
     return dialogs;

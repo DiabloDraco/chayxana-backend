@@ -38,6 +38,10 @@ const MessageModel = sequelize.define(
     file: {
       type: DataTypes.STRING,
     },
+    is_read: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     underscored: true,
