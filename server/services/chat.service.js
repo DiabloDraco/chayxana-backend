@@ -59,17 +59,19 @@ const findDialogs = async () => {
           as: "user",
           attributes: ["name", "phone", "photo"],
         },
-        {
-          model: MessageModel,
-          as: "messages",
-          attributes: [[sequelize.fn("COUNT", "*"), "unreads"]],
-          where: {
-            is_read: false,
-          },
-        },
       ],
-      group: ["dialogs.id"],
     });
+
+    for (let i = 0; i < dialogs.length; i++) {
+      const messages = await MessageModel.count({
+        where: {
+          dialog_id: dialogs[i].dataValues.id,
+          is_read: false,
+        },
+      });
+
+      dialogs[i].dataValues.unread = messages;
+    }
     return dialogs;
   } catch (error) {
     throw new Error(error.message);
