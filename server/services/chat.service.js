@@ -2,6 +2,7 @@ import MessageModel from "../models/message.model.js";
 import DialogModel from "../models/dialog.model.js";
 import UserModel from "../models/user.model.js";
 import { Op } from "sequelize";
+import sequelize from "../plugins/sequalize.js";
 
 const sendMessage = async (dialog_id, message, file_id, is_user) => {
   try {
