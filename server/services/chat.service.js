@@ -62,9 +62,6 @@ const findDialogs = async () => {
         {
           model: MessageModel,
           as: "messages",
-          where: {
-            is_read: false,
-          },
           order: [["created_at", "DESC"]],
           limit: 1,
         },
