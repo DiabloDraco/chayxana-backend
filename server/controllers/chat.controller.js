@@ -14,13 +14,14 @@ const sendMessages = async (req, res) => {
     const file_id = req.file?.filename || null;
     const user = req.user.id;
 
+    const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
+
     await getIO().emit("newMessage", {
       dialog_id,
       user,
-      message,
+      newMessage,
     });
 
-    const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
     res.status(200).json(newMessage);
   } catch (error) {
     res.status(400).json({ message: error.message });
