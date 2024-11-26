@@ -74,6 +74,7 @@ const findDialogs = async () => {
         where: {
           dialog_id: dialogs[i].dataValues.id,
           is_read: false,
+          is_user: true,
         },
       });
 
