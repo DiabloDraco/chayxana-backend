@@ -17,6 +17,7 @@ const sendMessages = async (req, res) => {
     await getIO().emit("newMessage", {
       dialog_id,
       user,
+      message,
     });
 
     const newMessage = await sendMessage(dialog_id, message, file_id, is_user);
@@ -29,7 +30,8 @@ const sendMessages = async (req, res) => {
 const findAllMessages = async (req, res) => {
   try {
     const { id } = req.params;
-    const items = await findAll(id);
+    const role = req.user.roles;
+    const items = await findAll(id, role == "USER");
     res.status(200).json(items);
   } catch (error) {
     res.status(400).json({ message: error.message });

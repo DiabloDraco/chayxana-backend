@@ -25,7 +25,7 @@ const sendMessage = async (dialog_id, message, file_id, is_user) => {
   }
 };
 
-const findAll = async (dialog_id) => {
+const findAll = async (dialog_id, is_user) => {
   try {
     const messages = await MessageModel.findAll({
       where: {
@@ -40,6 +40,7 @@ const findAll = async (dialog_id) => {
       {
         where: {
           dialog_id,
+          is_user: !is_user,
         },
       }
     );
