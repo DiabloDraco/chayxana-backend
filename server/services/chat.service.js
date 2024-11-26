@@ -31,7 +31,7 @@ const findAll = async (dialog_id, is_user) => {
       where: {
         dialog_id,
       },
-      order: [["created_at", "DESC"]],
+      order: [["created_at", "ASC"]],
     });
 
     await MessageModel.update(
