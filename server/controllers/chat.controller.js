@@ -32,6 +32,7 @@ const findAllMessages = async (req, res) => {
   try {
     const { id } = req.params;
     const role = req.user.roles;
+
     const items = await findAll(id, role == "USER");
     res.status(200).json(items);
   } catch (error) {
