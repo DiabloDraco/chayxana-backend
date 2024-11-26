@@ -59,6 +59,15 @@ const findDialogs = async () => {
           as: "user",
           attributes: ["name", "phone", "photo"],
         },
+        {
+          model: MessageModel,
+          as: "messages",
+          where: {
+            is_read: false,
+          },
+          order: [["created_at", "DESC"]],
+          limit: 1,
+        },
       ],
     });
 
