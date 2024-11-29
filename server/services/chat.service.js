@@ -95,6 +95,10 @@ const findDialogItem = async (user_id) => {
       },
     });
 
+    if (!dialogs) {
+      throw new Error("Dialog not found");
+    }
+
     const messages = await MessageModel.count({
       where: {
         dialog_id: dialogs.dataValues.id,
