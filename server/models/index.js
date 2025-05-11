@@ -78,6 +78,11 @@ RequestModel.belongsTo(UserModel, {
   as: "courier",
 });
 
+RequestModel.belongsTo(PromoModel, {
+  foreignKey: "discount_id",
+  as: "promo",
+});
+
 UserModel.hasMany(RequestModel, {
   foreignKey: "delivery_by",
   as: "requests",
