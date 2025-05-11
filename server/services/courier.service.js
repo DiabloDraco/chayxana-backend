@@ -28,11 +28,6 @@ const findMyOrders = async ({ user_id }) => {
             },
           ],
         },
-        {
-          model: DiscountModel,
-          as: "discount",
-          attributes: ["percentage"],
-        },
       ],
       order: [["created_at", "DESC"]],
     });
