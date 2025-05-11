@@ -58,11 +58,6 @@ const findNewOrders = async () => {
             },
           ],
         },
-        {
-          model: DiscountModel,
-          as: "discount",
-          attributes: ["percentage"],
-        },
       ],
       order: [["created_at", "DESC"]],
     });
