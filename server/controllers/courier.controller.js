@@ -24,7 +24,7 @@ const getAllNewOrders = async (req, res) => {
 
 const applyDelivery = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const user_id = req.user.id;
     const items = await acceptOrder({ user_id, id });
 
