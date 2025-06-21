@@ -86,4 +86,23 @@ const acceptOrder = async ({ user_id, id }) => {
   }
 };
 
-export { findMyOrders, findNewOrders, acceptOrder };
+const finishOrder = async ({ id }) => {
+  try {
+    const order = await RequestModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    order.delivery_time = new Date().getTime();
+    order.delivery_date = new Date().toLocaleDateString();
+
+    await order.save();
+
+    return order;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export { findMyOrders, findNewOrders, acceptOrder, finishOrder };

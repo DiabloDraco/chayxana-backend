@@ -34,4 +34,16 @@ const applyDelivery = async (req, res) => {
   }
 };
 
-export { findAll, getAllNewOrders, applyDelivery };
+const finishDelivery = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user_id = req.user.id;
+    const items = await finishOrder({ user_id, id });
+
+    res.status(200).send(items);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+
+export { findAll, getAllNewOrders, applyDelivery, finishDelivery };
