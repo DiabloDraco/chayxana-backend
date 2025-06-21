@@ -2,6 +2,7 @@ import {
   findMyOrders,
   findNewOrders,
   acceptOrder,
+  finishOrder,
 } from "../services/courier.service.js";
 
 const findAll = async (req, res) => {
