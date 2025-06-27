@@ -39,17 +39,17 @@ const loginUsers = async (req, res) => {
   }
 };
 
-const myUser = async (req, res) => {
+const myUser = async (req, res, next) => {
   try {
-    const user_id = req.user.id;
+    const userId = req.user?.id;
 
-    if (!user_id) throw new Error("User not found");
+    if (!userId) throw new Error("User not found");
 
-    const user = await me(user_id);
+    const user = await me(userId);
 
     res.status(200).send(user);
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    next(error);
   }
 };
 

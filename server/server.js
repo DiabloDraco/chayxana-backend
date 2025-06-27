@@ -1,3 +1,11 @@
+process.on("unhandledRejection", (reason) => {
+  console.error("🛑 Unhandled Rejection:", reason);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("💥 Uncaught Exception:", err);
+});
+
 import express from "express";
 import cors from "cors";
 import routes from "./routes/routes.js";
@@ -38,6 +46,7 @@ app.use(express.json({ limit: "50mb" }));
 
 initializeSocket(server);
 app.use("/file", express.static("../uploads"));
+
 app.use(
   morgan("combined", {
     stream: { write: (message) => logger.info(message.trim()) },
@@ -45,5 +54,12 @@ app.use(
 );
 
 app.use("/api", routes);
+
+app.use((err, req, res, next) => {
+  console.error("Error:", err);
+  res
+    .status(err.status || 500)
+    .json({ message: err.message || "Internal error" });
+});
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
